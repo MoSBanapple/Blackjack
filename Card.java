@@ -21,6 +21,18 @@ public class Card
         return value;
     }
     
+    public int getBlackValue()
+    {
+        if (value > 10)
+        {
+            return 10;
+        }
+        else
+        {
+            return value;
+        }
+    }
+    
     public String getSuit()
     {
         return suit;
