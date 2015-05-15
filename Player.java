@@ -15,6 +15,8 @@ public class Player
     int[] chips; // 1 5 25 100
 
     boolean stayed;
+    
+    int[] currentBet;
 
 
     public Player()
@@ -24,6 +26,7 @@ public class Player
         chips = new int[] { 25, 15, 20, 14 };
         stayed = false;
         pocket = null;
+        currentBet = new int[4];
     }
 
 
@@ -130,6 +133,25 @@ public class Player
         chips[3] = hundred;
         return temp;
     }
+    
+    public int[] addBet(int[] bet)
+    {
+        for (int j = 0; j < chips.length; j++)
+        {
+            if (bet[j] < chips[j])
+            {
+                chips[j] -= bet[j];
+                currentBet[j] += bet[j];
+            }
+            else
+            {
+                currentBet[j] += chips[j];
+                chips[j] = 0;
+                 
+            }
+        }
+        return bet;
+    }
 
 
     public int[] getChips()
@@ -157,10 +179,42 @@ public class Player
         sum += 100 * chips[3];
         return sum;
     }
-
-
-    public void changeStayed()
+    
+    public int sumBet()
     {
-        stayed = !stayed;
+        int sum = currentBet[0];
+        sum += 5 * currentBet[1];
+        sum += 25 * currentBet[2];
+        sum += 100 * currentBet[3];
+        return sum;
+    }
+
+
+    public void changeStayed(boolean boo)
+    {
+        stayed = boo;
+    }
+    
+    public boolean isStayed()
+    {
+        return stayed;
+    }
+    
+    public void doubleDown()
+    {
+        int[] values = new int[]{1, 5, 25, 100};
+        stayed = true;
+        int sum = this.sumChips();
+        int add = 0;
+        for (int j = chips.length - 1; j >= 0; j--)
+        {
+            while (chips[j] > 0 && add + values[j] > sum );
+            {
+                chips[j] --;
+                currentBet[j] ++;
+                add += values[j];
+            }
+        }
+        
     }
 }
