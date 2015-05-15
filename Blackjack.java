@@ -20,9 +20,13 @@ public class Blackjack
 
     private static final int NUMBER_OF_PLAYERS = 4;
 
+    Scanner kbd;
+
 
     public Blackjack()
     {
+        kbd = new Scanner( System.in );
+
         love = new AI();
         discardPile = new Stack<Card>();
         players = new Player[NUMBER_OF_PLAYERS];
@@ -55,14 +59,23 @@ public class Blackjack
 
     public void doTheThing()
     {
-        int dealer = 0;
+        int i = 0;
 
-        for ( int i = 1; i <= 4; i++ )
+        while ( true )
         {
+            i++;
             System.out.println( "--ROUND " + i + "--" );
-            doRound( dealer );
+            doRound( i - 1 );
             System.out.println( "--END OF ROUND " + i + "-- CARDS LEFT: "
                 + deck1.size + "\n\n" );
+
+            System.out.println( "\"q\" to quit." );
+            String response = kbd.nextLine().toUpperCase();
+            if ( response.equals( "Q" ) )
+            {
+                System.out.println( "Goodbye!" );
+                return;
+            }
         }
     }
 
@@ -76,11 +89,13 @@ public class Blackjack
         // System.out.println( players[0].stringChips() );
         int who = dealer; // whose turn is it?
 
-        System.out.println( players[who].getName() + " the dealer's turn:" );
-        love.dealerStrategy( players[who], deck1 );
-        System.out.println( players[who].printHand() );
-        System.out.println( "value " + players[who].getHandValue() );
-        System.out.println();
+        System.out.println( doMove( who, dealer ) );
+        // System.out.println( players[who].getName() + " the dealer's turn:"
+        // );
+        // love.dealerStrategy( players[who], deck1 );
+        // System.out.println( players[who].printHand() );
+        // System.out.println( "Value: " + players[who].getHandValue() );
+        // System.out.println();
         //
         // cleanHands();
         //
@@ -88,59 +103,68 @@ public class Blackjack
         // System.out.println( resetDeck() );
 
         who++;
-        doWikipedia( who, dealer );
+        System.out.println( doMove( who, dealer ) );
 
         who++;
-        doWikipedia( who, dealer );
+        System.out.println( doMove( who, dealer ) );
 
         who++;
-        doWikipedia( who, dealer );
+        System.out.println( doMove( who, dealer ) );
 
         cleanHands();
 
         // System.out.println( deck1.toString() );
 
-        // System.out.println( printStats( testStats( 100 ) ) );
+        // System.out.println( printStats( testStats( 500 ) ) );
     }
 
 
-    void doWikipedia( int whoseTurn, int dealer )
+    String doMove( int whoseTurn, int dealer )
     {
         whoseTurn %= NUMBER_OF_PLAYERS;
         dealer %= NUMBER_OF_PLAYERS;
-        System.out.println( players[whoseTurn].getName() + "'s turn:" );
-        love.wikipediaStrategy( players[whoseTurn], players[dealer], deck1 );
-        System.out.println( players[whoseTurn].printHand() );
-        System.out.println( "value " + players[whoseTurn].getHandValue() );
-        System.out.println();
+
+        String s = players[whoseTurn].getName();
+
+        if ( whoseTurn == dealer )
+        {
+            s += " the dealer";
+        }
+        s += "'s turn:";
+
+        chooseMove( whoseTurn, dealer );
+
+        s += "\n" + players[whoseTurn].printHand();
+        s += "\nValue: " + players[whoseTurn].getHandValue() + "\n";
+        return s;
     }
 
 
-    void deal()
+    void chooseMove( int whoseTurn, int dealer )
     {
-        cleanHands();
-        if ( deck1.getSize() < LIMIT )
+        if ( dealer == whoseTurn )
         {
-            System.out.println( "\nRESET THE DECK\n" );
-            resetDeck();
+            love.dealerStrategy( players[whoseTurn], deck1 );
         }
-        for ( int i = 0; i < players.length; i++ )
+        else
         {
-            love.drawFirstTwoCards( players[i], deck1 );
+            love.guessingStrategy( players[whoseTurn], players[dealer], deck1 );
         }
     }
 
 
     int[] testStats( int howManyTimes )
     {
-        int[] stats = new int[30];
+        int[] stats = new int[30]; // TODO stats[30] = wins
 
         for ( int i = 0; i < howManyTimes; i++ )
         {
             deal();
 
+            love.guessingStrategy( players[1], players[0], deck1 );
+            // love.wikipediaStrategy( players[1], players[0], deck1 );
             love.dealerStrategy( players[0], deck1 );
-            stats[players[0].getHandValue()]++;
+            stats[players[1].getHandValue()]++;
         }
 
         return stats;
@@ -160,6 +184,33 @@ public class Blackjack
             s += "\n";
         }
         return s;
+    }
+
+
+    /**
+     * 
+     * TODO Write your method description here.
+     * 
+     * @return
+     */
+    boolean won( Player dealer, Player p )
+    {
+        return false;
+    }
+
+
+    void deal()
+    {
+        cleanHands();
+        if ( deck1.getSize() < LIMIT )
+        {
+            System.out.println( "\nRESET THE DECK\n" );
+            resetDeck();
+        }
+        for ( int i = 0; i < players.length; i++ )
+        {
+            love.drawFirstTwoCards( players[i], deck1 );
+        }
     }
 
 
