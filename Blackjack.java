@@ -82,6 +82,7 @@ public class Blackjack
 
     public void doRound( int dealer )
     {
+  //      /**
         dealer %= NUMBER_OF_PLAYERS;
 
         deal();
@@ -89,7 +90,7 @@ public class Blackjack
         // System.out.println( players[0].stringChips() );
         int who = dealer; // whose turn is it?
 
-        System.out.println( doMove( who, dealer ) );
+
         // System.out.println( players[who].getName() + " the dealer's turn:"
         // );
         // love.dealerStrategy( players[who], deck1 );
@@ -110,12 +111,14 @@ public class Blackjack
 
         who++;
         System.out.println( doMove( who, dealer ) );
-
+        
+        System.out.println( doMove( dealer, dealer ) );
         cleanHands();
 
+        
         // System.out.println( deck1.toString() );
-
-        // System.out.println( printStats( testStats( 500 ) ) );
+//     */
+  //      System.out.println( printStats( testStats( 250 ) ) );
     }
 
 
@@ -148,7 +151,7 @@ public class Blackjack
         }
         else
         {
-            love.guessingStrategy( players[whoseTurn], players[dealer], deck1 );
+            love.wikipediaStrategy( players[whoseTurn], players[dealer], deck1 );
         }
     }
 
@@ -160,8 +163,9 @@ public class Blackjack
         for ( int i = 0; i < howManyTimes; i++ )
         {
             deal();
-
-            love.guessingStrategy( players[1], players[0], deck1 );
+            
+            love.dealerStrategy( players[1], deck1 );
+           // love.guessingStrategy( players[1], players[0], deck1 );
             // love.wikipediaStrategy( players[1], players[0], deck1 );
             love.dealerStrategy( players[0], deck1 );
             stats[players[1].getHandValue()]++;
@@ -193,9 +197,12 @@ public class Blackjack
      * 
      * @return
      */
-    boolean won( Player dealer, Player p )
+    int won( Player dealer, Player p )
     {
-        return false;
+        int dealerHand = dealer.getHandValue();
+        
+        int playerHand = p.getHandValue();
+        return 0;
     }
 
 
@@ -209,7 +216,11 @@ public class Blackjack
         }
         for ( int i = 0; i < players.length; i++ )
         {
-            love.drawFirstTwoCards( players[i], deck1 );
+            players[i].addCard( deck1.draw());
+        }
+        for ( int i = 0; i < players.length; i++ )
+        {
+            players[i].addCard( deck1.draw());
         }
     }
 
