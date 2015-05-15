@@ -82,7 +82,7 @@ public class Blackjack
 
     public void doRound( int dealer )
     {
-  //      /**
+        /**
         dealer %= NUMBER_OF_PLAYERS;
 
         deal();
@@ -117,8 +117,8 @@ public class Blackjack
 
         
         // System.out.println( deck1.toString() );
-//     */
-  //      System.out.println( printStats( testStats( 250 ) ) );
+     */
+        System.out.println( printStats( testStats( 250 ) ) );
     }
 
 
@@ -164,9 +164,10 @@ public class Blackjack
         {
             deal();
             
-            love.dealerStrategy( players[1], deck1 );
-           // love.guessingStrategy( players[1], players[0], deck1 );
-            // love.wikipediaStrategy( players[1], players[0], deck1 );
+         // love.dealerStrategy( players[1], deck1 );
+            love.randomStrategy( players[1], deck1 );
+         // love.guessingStrategy( players[1], players[0], deck1 );
+         // love.wikipediaStrategy( players[1], players[0], deck1 );
             love.dealerStrategy( players[0], deck1 );
             stats[players[1].getHandValue()]++;
         }
