@@ -1,7 +1,18 @@
 package aldz_Blackjack;
 
+import java.util.*;
+
+
 public class AI
 {
+    private Random rand;
+
+
+    public AI()
+    {
+        rand = new Random();
+    }
+
 
     public void drawFirstTwoCards( Player p, Deck d )
     {
@@ -40,6 +51,33 @@ public class AI
 
     /**
      * 
+     * This strategy tries to guess the dealer's hand, and adjusts the strategy
+     * accordingly.
+     * 
+     * @param p
+     *            user input Player to implement strategy
+     * @param dealer
+     *            user input Deck to draw from
+     * @param d
+     *            user input Player who is the dealer of this round
+     */
+    public void guessingStrategy( Player p, Player dealer, Deck d )
+    {
+        int guessedDealerScore = 6 + rand.nextInt( 5 )
+            + dealer.getHand().get( 1 ).getBlackValue();
+
+        int tries = 2 + rand.nextInt( 2 );
+        int currScore = p.getHandValue();
+        while ( tries > 0 && currScore < guessedDealerScore )
+        {
+            p.addCard( d.draw() );
+            currScore = p.getHandValue();
+        }
+    }
+
+
+    /**
+     * 
      * This implements the Wikipedia basic strategy outlined in the Wikipedia
      * article for blackjack.
      * 
@@ -62,8 +100,10 @@ public class AI
 
         // the following assumes you have a hard total.
         int total = p.getHandValue();
-        if ( total == 21 )
+        if ( p.getHand().size() == 2 && total == 21 )
             return; // BLACKJACK
+        if ( total >= 21 )
+            return; // BUSTED
 
         // -1 = surrender, 0 = stay, 1 = hit, 2 = double down hit
         int[][] hardWiki = { { 0, 0, 0, 0, 0, 0, 0, 0, 0, -1 },
@@ -108,12 +148,14 @@ public class AI
         {
             // hit
             p.addCard( d.draw() );
+            wikipediaStrategy( p, dealer, d );
         }
         else
         // if (result == 2)
         {
             // double down or hit
             p.addCard( d.draw() );
+            wikipediaStrategy( p, dealer, d );
         }
     }
 }
