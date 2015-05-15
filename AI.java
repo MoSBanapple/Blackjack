@@ -14,13 +14,6 @@ public class AI
     }
 
 
-    public void drawFirstTwoCards( Player p, Deck d )
-    {
-        p.addCard( d.draw() );
-        p.addCard( d.draw() );
-    }
-
-
     /**
      * 
      * This strategy will hit until the value of the player's hand reaches 17 or
@@ -74,8 +67,50 @@ public class AI
             currScore = p.getHandValue();
         }
     }
-
-
+    
+    /**
+     * 
+     * TODO Write your method description here.
+     * @param p
+     * @param dealer
+     * @param d
+     */
+    public void randomStrategy( Player p, Deck d)
+    {
+        if(p.getHandValue() >= 20)
+            return;
+        double r = Math.random();
+        
+        if ( r < 0.5 )
+        {
+            // Hit
+            p.addCard( d.draw() );
+            randomStrategy( p, d );
+        }
+        else if ( r < .9 )
+        {
+            // Stay
+        }
+        else
+        {
+            // Surrender
+        }
+    }
+    
+    /**
+     * 
+     * TODO Write your method description here.
+     * @param p
+     * @param dealer
+     * @param d
+     */
+    public void peekingStrategy( Player p, Player dealer, Deck d)
+    {
+        int dealerHand = dealer.getHandValue();
+        
+    }
+    
+    
     /**
      * 
      * This implements the Wikipedia basic strategy outlined in the Wikipedia
