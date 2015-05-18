@@ -60,14 +60,18 @@ public class Blackjack
     public void doTheThing()
     {
         int i = 0;
+        int dealer = 0;
 
         while ( true )
         {
             i++;
             System.out.println( "--ROUND " + i + "--" );
-            doRound( i - 1 );
+            doRound( dealer );
             System.out.println( "--END OF ROUND " + i + "-- CARDS LEFT: "
                 + deck1.size + "\n\n" );
+
+            if ( i % 4 == 0 )
+                dealer++;
 
             System.out.println( "\"q\" to quit." );
             String response = kbd.nextLine().toUpperCase();
@@ -83,41 +87,22 @@ public class Blackjack
     public void doRound( int dealer )
     {
         /**
-        dealer %= NUMBER_OF_PLAYERS;
-
-        deal();
-
-        // System.out.println( players[0].stringChips() );
-        int who = dealer; // whose turn is it?
-
-
-        // System.out.println( players[who].getName() + " the dealer's turn:"
-        // );
-        // love.dealerStrategy( players[who], deck1 );
-        // System.out.println( players[who].printHand() );
-        // System.out.println( "Value: " + players[who].getHandValue() );
-        // System.out.println();
-        //
-        // cleanHands();
-        //
-        // System.out.println( deck1.size );
-        // System.out.println( resetDeck() );
-
-        who++;
-        System.out.println( doMove( who, dealer ) );
-
-        who++;
-        System.out.println( doMove( who, dealer ) );
-
-        who++;
-        System.out.println( doMove( who, dealer ) );
-        
-        System.out.println( doMove( dealer, dealer ) );
-        cleanHands();
-
-        
-        // System.out.println( deck1.toString() );
-     */
+         * dealer %= NUMBER_OF_PLAYERS;
+         * 
+         * deal();
+         * 
+         * int who = dealer; // whose turn is it?
+         * 
+         * who++; System.out.println( doMove( who, dealer ) );
+         * 
+         * who++; System.out.println( doMove( who, dealer ) );
+         * 
+         * who++; System.out.println( doMove( who, dealer ) );
+         * 
+         * System.out.println( doMove( dealer, dealer ) ); cleanHands();
+         * 
+         * // System.out.println( deck1.toString() );
+         */
         System.out.println( printStats( testStats( 250 ) ) );
     }
 
@@ -158,18 +143,30 @@ public class Blackjack
 
     int[] testStats( int howManyTimes )
     {
-        int[] stats = new int[30]; // TODO stats[30] = wins
+        int[] stats = new int[33];
+        // stats[30] = player wins
+        // stats[31] = draws
+        // stats[32] = dealer wins
 
         for ( int i = 0; i < howManyTimes; i++ )
         {
             deal();
-            
-         // love.dealerStrategy( players[1], deck1 );
-            love.randomStrategy( players[1], deck1 );
-         // love.guessingStrategy( players[1], players[0], deck1 );
-         // love.wikipediaStrategy( players[1], players[0], deck1 );
+
+            // love.dealerStrategy( players[1], deck1 );
+            // love.guessingStrategy( players[1], players[0], deck1 );
+            // love.randomStrategy( players[1], deck1 );
+             love.peekingStrategy( players[1], players[0], deck1 );
+            // love.wikipediaStrategy( players[1], players[0], deck1 );
             love.dealerStrategy( players[0], deck1 );
             stats[players[1].getHandValue()]++;
+
+            int result = result( players[0], players[1] );
+            if ( result > 0 )
+                stats[30]++;
+            else if ( result == 0 )
+                stats[31]++;
+            else
+                stats[32]++;
         }
 
         return stats;
@@ -179,7 +176,7 @@ public class Blackjack
     String printStats( int[] stats )
     {
         String s = "";
-        for ( int i = 0; i < stats.length; i++ )
+        for ( int i = 0; i < 30; i++ )
         {
             s += i + "\t";
             for ( int j = 0; j < stats[i]; j++ )
@@ -188,21 +185,64 @@ public class Blackjack
             }
             s += "\n";
         }
+
+        s += "Player wins: " + stats[30] + "\n";
+        s += "Draws:       " + stats[31] + "\n";
+        s += "Dealer wins: " + stats[32] + "\n";
+        s += "Win rate:    " + ( stats[30] + 0.1 - 0.1 )
+            / ( stats[30] + stats[31] + stats[32] ) + "\n";
         return s;
     }
 
 
     /**
      * 
-     * TODO Write your method description here.
+     * This calculates who wins a blackjack hand, between a player and a dealer.
      * 
-     * @return
+     * -2: dealer blackjack
+     * 
+     * -1: dealer wins
+     * 
+     * 0: tie
+     * 
+     * 1: player wins
+     * 
+     * 2: player blackjack
+     * 
+     * @param dealer
+     *            user input Player who is the dealer of this hand
+     * @param p
+     *            user input Player to compare with the dealer
+     * @return the int number that corresponds to a result
      */
-    int won( Player dealer, Player p )
+    int result( Player dealer, Player p )
     {
-        int dealerHand = dealer.getHandValue();
-        
-        int playerHand = p.getHandValue();
+        int dHand = dealer.getHandValue();
+        int dCards = dealer.getHand().size();
+        int pHand = p.getHandValue();
+        int pCards = p.getHand().size();
+
+        if ( pCards == 2 && pHand == 21 )
+            return 2;
+        if ( dCards == 2 && dHand == 21 )
+            return -2;
+        if ( dHand > 21 )
+        {
+            return 1;
+        }
+        if ( pHand > 21 )
+        {
+            return -1;
+        }
+        if ( pHand - dHand > 0 )
+        {
+            return 1;
+        }
+        if ( pHand - dHand < 0 )
+        {
+            return -1;
+        }
+
         return 0;
     }
 
@@ -217,11 +257,11 @@ public class Blackjack
         }
         for ( int i = 0; i < players.length; i++ )
         {
-            players[i].addCard( deck1.draw());
+            players[i].addCard( deck1.draw() );
         }
         for ( int i = 0; i < players.length; i++ )
         {
-            players[i].addCard( deck1.draw());
+            players[i].addCard( deck1.draw() );
         }
     }
 
