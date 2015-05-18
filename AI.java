@@ -67,27 +67,34 @@ public class AI
             currScore = p.getHandValue();
         }
     }
-    
+
+
     /**
      * 
-     * TODO Write your method description here.
+     * This strategy randomly determines whether to hit or stand or surrender.
+     * It has a 50% chance of hitting, a 40% chance of standing, and a 10%
+     * chance of surrender.
+     * 
      * @param p
+     *            user input Player to implement strategy
      * @param dealer
+     *            user input Deck to draw from
      * @param d
+     *            user input Player who is the dealer of this round
      */
-    public void randomStrategy( Player p, Deck d)
+    public void randomStrategy( Player p, Deck d )
     {
-        if(p.getHandValue() >= 20)
+        if ( p.getHandValue() >= 20 )
             return;
         double r = Math.random();
-        
+
         if ( r < 0.5 )
         {
             // Hit
             p.addCard( d.draw() );
             randomStrategy( p, d );
         }
-        else if ( r < .9 )
+        else if ( r < .9 || p.getHand().size() > 2 )
         {
             // Stay
         }
@@ -96,21 +103,46 @@ public class AI
             // Surrender
         }
     }
-    
+
+
     /**
      * 
-     * TODO Write your method description here.
+     * This strategy determines whether to hit by peeking at the dealer's hand
+     * value.
+     * 
      * @param p
+     *            user input Player to implement strategy
      * @param dealer
+     *            user input Deck to draw from
      * @param d
+     *            user input Player who is the dealer of this round
      */
-    public void peekingStrategy( Player p, Player dealer, Deck d)
+    public void peekingStrategy( Player p, Player dealer, Deck d )
     {
         int dealerHand = dealer.getHandValue();
-        
+        int ownHand = p.getHandValue();
+        if ( dealerHand == 21 && ownHand != 21 )
+        {
+            // surrender
+            return;
+        }
+        while( dealerHand < 17)
+        {
+            dealerHand += 5;
+        }
+        if ( dealerHand > 21 || ownHand >= 20 )
+        {
+            // stay
+            return;
+        }
+        if ( dealerHand - ownHand > 4  )
+        {
+            p.addCard( d.draw() );
+            peekingStrategy( p, dealer, d );
+        }
     }
-    
-    
+
+
     /**
      * 
      * This implements the Wikipedia basic strategy outlined in the Wikipedia
