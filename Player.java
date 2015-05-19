@@ -2,6 +2,7 @@ package aldz_Blackjack;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Random;
 
 
 public class Player
@@ -18,6 +19,9 @@ public class Player
     
     int[] currentBet;
 
+    boolean surrendered;
+    
+    Player secondHand;
 
     public Player()
     {
@@ -27,6 +31,8 @@ public class Player
         stayed = false;
         pocket = null;
         currentBet = new int[4];
+        surrendered = false;
+        secondHand = null;
     }
 
 
@@ -88,6 +94,10 @@ public class Player
 
     public int getHandValue()
     {
+        if (surrendered)
+        {
+            return -1;
+        }
         int elevens = 0;
         int i = 0;
 
@@ -114,11 +124,13 @@ public class Player
     }
 
 
-    public void swapCard()
+    public boolean swapCard()
     {
         Card temp = hand.get( 0 );
         hand.set( 0, pocket );
         pocket = temp;
+        Random rand = new Random();
+        return rand.nextInt( 4 ) == 0;
     }
 
 
@@ -149,6 +161,10 @@ public class Player
                 chips[j] = 0;
                  
             }
+        }
+        if (secondHand != null)
+        {
+            secondHand.addBet( bet );
         }
         return bet;
     }
@@ -193,6 +209,10 @@ public class Player
     public void changeStayed(boolean boo)
     {
         stayed = boo;
+        if (secondHand != null)
+        {
+            secondHand.stayed = boo;
+        }
     }
     
     public boolean isStayed()
@@ -215,6 +235,61 @@ public class Player
                 add += values[j];
             }
         }
+        if (secondHand != null)
+        {
+            //doubledown from main person;s chips
+        }
         
+    }
+    public void surrender()
+    {
+        stayed = true;
+        surrendered = true;
+        for (int j = 0; j < chips.length; j++)
+        {
+            chips[j] += currentBet[j] - currentBet[j]/2;
+            currentBet[j] /= 2;
+        }
+        
+    }
+    
+    public void split()
+    {
+        if (hand.size() > 2)
+        {
+            return;
+        }
+        
+        secondHand = new Player();
+        secondHand.setChips( currentBet[0], currentBet[1],currentBet[2],currentBet[3] );
+        secondHand.addBet( currentBet );
+        
+    }
+    
+    public Player splitHand()
+    {
+        return secondHand;
+    }
+    
+
+    
+    public Card[] reconcileSplit()
+    {
+        Card[] result = null;
+        if (secondHand != null)
+        {
+            result = new Card[secondHand.getHand().size()];
+            for (int j = 0; j < result.length; j++)
+            {
+                result[j] = secondHand.getHand().get( j );
+            }
+
+            for (int j = 0; j < chips.length; j++)
+            {
+                chips[j] += secondHand.getChips()[j];
+            }
+            secondHand = null;
+        }
+        return result;
     }
 }
