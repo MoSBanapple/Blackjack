@@ -17,10 +17,13 @@ public class Player
     private boolean stayed;
 
     private int currentBet;
+    
+    private Player secondHand;
 
 
     public Player()
     {
+        secondHand = null;
         name = "";
         hand = new LinkedList<Card>();
         chips = 2000;
@@ -204,4 +207,15 @@ public class Player
         }
         return false;
     }
+    
+    public int compareTo(Player other)
+    {
+        return this.sumChips() - other.sumChips();
+    }
+    
+    public boolean equals(Player other)
+    {
+        return this.sumChips() == other.sumChips();
+    }
+    
 }
