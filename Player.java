@@ -4,6 +4,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 
+/**
+ * This is the player class. Holds and receives cards. It also enacts actions
+ * within itself. It represents a player n the game of blackjack.
+ *
+ * @author dzhang640
+ * @version May 20, 2015
+ * @author Period: TODO
+ * @author Assignment: ALDZ_Blackjack
+ *
+ * @author Sources: TODO
+ */
 public class Player
 {
     private String name;
@@ -17,10 +28,13 @@ public class Player
     private boolean stayed;
 
     private int currentBet;
-    
+
     private Player secondHand;
 
 
+    /**
+     * This is the constructor for the player class.
+     */
     public Player()
     {
         secondHand = null;
@@ -33,12 +47,21 @@ public class Player
     }
 
 
+    /**
+     * Gives the name for the player class.
+     * @return the name of the player.
+     */
     String getName()
     {
         return name;
     }
 
 
+    /**
+     * Sets a new name for the player class.
+     * @param inputName the desired name
+     * @return the previous name of the class.
+     */
     String setName( String inputName )
     {
         String temp = name;
@@ -47,6 +70,10 @@ public class Player
     }
 
 
+    /**
+     * Checks if the player has an ace
+     * @return whether the player has an ace
+     */
     public boolean hasAce()
     {
         for ( Card c : hand )
@@ -56,24 +83,39 @@ public class Player
     }
 
 
+    /**
+     * Adds a card to the player's hand
+     * @param card The card to be added
+     */
     public void addCard( Card card )
     {
         hand.add( card );
     }
 
 
+    /**
+     * Clears the hand of the player
+     */
     public void resetHand()
     {
         hand = new LinkedList<Card>();
     }
 
 
+    /**
+     * Returns the list of cards of the player
+     * @return the hand of cards
+     */
     public List<Card> getHand()
     {
         return hand;
     }
 
 
+    /**
+     * Prints the hand of the player
+     * @return a list of cards of the player's hands
+     */
     public String printHand()
     {
         String s = "";
@@ -89,6 +131,10 @@ public class Player
     }
 
 
+    /**
+     * Gives the blackjack value of the player's hand
+     * @return the blackjack value of the player's hand
+     */
     public int getHandValue()
     {
         int elevens = 0;
@@ -115,11 +161,19 @@ public class Player
     }
 
 
+    /**
+     * Swaps a card into the packet
+     */
     public void swapCard()
     {
         Card temp = hand.get( 0 );
         hand.set( 0, pocket );
         pocket = temp;
+    }
+    
+    public void addPocket(Card card)
+    {
+        pocket = card;
     }
 
 
@@ -132,11 +186,12 @@ public class Player
         return temp;
     }
 
+
     public void addChips( int newChips )
     {
         chips += newChips;
     }
-    
+
 
     public int addBet( int bet )
     {
@@ -149,12 +204,13 @@ public class Player
         currentBet += bet;
         return bet;
     }
-    
+
+
     public void resetBet()
     {
         currentBet = 0;
     }
-    
+
 
     public int getChips()
     {
@@ -178,11 +234,13 @@ public class Player
     {
         return currentBet;
     }
-    
+
+
     public int getBet()
     {
         return currentBet;
     }
+
 
     public void changeStayed( boolean boo )
     {
@@ -207,15 +265,17 @@ public class Player
         }
         return false;
     }
-    
-    public int compareTo(Player other)
+
+
+    public int compareTo( Player other )
     {
         return this.sumChips() - other.sumChips();
     }
-    
-    public boolean equals(Player other)
+
+
+    public boolean equals( Player other )
     {
         return this.sumChips() == other.sumChips();
     }
-    
+
 }
