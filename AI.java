@@ -126,7 +126,7 @@ public class AI
             // surrender
             return;
         }
-        while( dealerHand < 17)
+        while ( dealerHand < 17 )
         {
             dealerHand += 5;
         }
@@ -135,7 +135,7 @@ public class AI
             // stay
             return;
         }
-        if ( dealerHand - ownHand > 4  )
+        if ( dealerHand - ownHand > 4 )
         {
             p.addCard( d.draw() );
             peekingStrategy( p, dealer, d );
@@ -220,9 +220,12 @@ public class AI
         else
         // if (result == 2)
         {
-            // double down or hit
+            // double down
             p.addCard( d.draw() );
-            wikipediaStrategy( p, dealer, d );
+            if ( !p.doubleDown() )
+            {
+                wikipediaStrategy( p, dealer, d );
+            }
         }
     }
 }

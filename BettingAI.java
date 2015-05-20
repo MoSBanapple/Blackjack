@@ -16,19 +16,22 @@ public class BettingAI
 
     private int zen;
 
+    private static final int DECK_MAX = 52;
 
+
+    /**
+     * This is the constructor. It sets all of the card counters to 0.
+     */
     public BettingAI()
     {
-        hiLo = 0;
-        hiOptI = 0;
-        hiOptII = 0;
-        ko = 0;
-        omegaII = 0;
-        red = 0;
-        zen = 0;
+        reset();
     }
 
 
+    /**
+     * 
+     * This resets the counts of all of the card counters to 0.
+     */
     public void reset()
     {
         hiLo = 0;
@@ -41,6 +44,14 @@ public class BettingAI
     }
 
 
+    /**
+     * 
+     * This updates the current count of the card, using the various card
+     * counting strategies.
+     * 
+     * @param c
+     *            Card that was revealed to the card counter
+     */
     public void update( Card c )
     {
         int value = c.getBlackValue();
@@ -140,7 +151,7 @@ public class BettingAI
 
     /**
      * 
-     * TODO Write your method description here.
+     * This calculates the amount of chips a player should bet.
      * 
      * Skill levels:
      * 
@@ -152,14 +163,16 @@ public class BettingAI
      * 
      * 2 Pro
      * 
-     * @param p
+     * @param cash
+     *            int amount of chips the Player betting has
      * @param skill
-     * @param deck
-     * @return
+     *            int the skill level of the Player betting
+     * @param deckSize
+     *            int the current size of the deck
+     * @return int amound
      */
-    int calculateBet( Player p, int skill, Deck deck )
+    int calculateBet( int cash, int skill, int deckSize )
     {
-        int cash = p.sumChips();
         double d = Math.random();
 
         double score = 0;
@@ -185,7 +198,7 @@ public class BettingAI
 
         if ( res == -1 )
         {
-            score = -hiLo;
+            score = 20 - hiLo;
         }
         else if ( res == 0 )
         {
@@ -220,53 +233,52 @@ public class BettingAI
             score = zen;
         }
 
-        score /= deck.getSize();
+        score = score * DECK_MAX / deckSize;
 
-        int porportionToBet = (int)( ( score / 2 + 10 ) / 100 );
-        int betAmount = cash * porportionToBet;
+        double proportionToBet = ( score + 10 ) / 100;
+        int betAmount = (int)( cash * proportionToBet );
 
         return betAmount;
     }
 
-
-    public int getHiLo()
-    {
-        return hiLo;
-    }
-
-
-    public int getHiOptI()
-    {
-        return hiOptI;
-    }
-
-
-    public int getHiOptII()
-    {
-        return hiOptII;
-    }
-
-
-    public int getKO()
-    {
-        return ko;
-    }
-
-
-    public int getOmegaII()
-    {
-        return omegaII;
-    }
-
-
-    public int getRed7()
-    {
-        return red;
-    }
-
-
-    public int getZenCount()
-    {
-        return zen;
-    }
+    // public int getHiLo()
+    // {
+    // return hiLo;
+    // }
+    //
+    //
+    // public int getHiOptI()
+    // {
+    // return hiOptI;
+    // }
+    //
+    //
+    // public int getHiOptII()
+    // {
+    // return hiOptII;
+    // }
+    //
+    //
+    // public int getKO()
+    // {
+    // return ko;
+    // }
+    //
+    //
+    // public int getOmegaII()
+    // {
+    // return omegaII;
+    // }
+    //
+    //
+    // public int getRed7()
+    // {
+    // return red;
+    // }
+    //
+    //
+    // public int getZenCount()
+    // {
+    // return zen;
+    // }
 }

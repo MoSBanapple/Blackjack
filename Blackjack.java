@@ -10,9 +10,13 @@ public class Blackjack
 {
     Player[] players;
 
+    int[] skill;
+
     Deck deck1;
 
     AI love;
+
+    BettingAI betAI;
 
     Stack<Card> discardPile;
 
@@ -39,6 +43,11 @@ public class Blackjack
         players[1].setName( "Bob" );
         players[2].setName( "Charile" );
         players[3].setName( "Dave" );
+
+        skill = new int[NUMBER_OF_PLAYERS];
+        updateSkill();
+
+        betAI = new BettingAI();
 
         deck1 = new Deck( false );
         // System.out.println(deck1.toString());
@@ -70,6 +79,15 @@ public class Blackjack
             System.out.println( "--END OF ROUND " + i + "-- CARDS LEFT: "
                 + deck1.size + "\n\n" );
 
+            for ( Player p : players )
+            {
+                if ( p.getChips() <= 0 )
+                {
+                    System.out.println( "GAME OVER" );
+                    return;
+                }
+            }
+
             if ( i % 4 == 0 )
                 dealer++;
 
@@ -86,24 +104,191 @@ public class Blackjack
 
     public void doRound( int dealer )
     {
-        /**
-         * dealer %= NUMBER_OF_PLAYERS;
-         * 
-         * deal();
-         * 
-         * int who = dealer; // whose turn is it?
-         * 
-         * who++; System.out.println( doMove( who, dealer ) );
-         * 
-         * who++; System.out.println( doMove( who, dealer ) );
-         * 
-         * who++; System.out.println( doMove( who, dealer ) );
-         * 
-         * System.out.println( doMove( dealer, dealer ) ); cleanHands();
-         * 
-         * // System.out.println( deck1.toString() );
-         */
-        System.out.println( printStats( testStats( 250 ) ) );
+        updateSkill();
+
+        dealer %= NUMBER_OF_PLAYERS;
+
+        int who = dealer; // whose turn is it?
+
+        System.out.println( deal() );
+
+        // Dealer
+        System.out.println( describePerson( players[who] ) );
+
+        int currentBet = 0;
+        // determine bets
+        who = ( who + 1 ) % NUMBER_OF_PLAYERS;
+        currentBet = makeBet( who, dealer );
+        // System.out.println( stringBet( who, dealer, currentBet ) );
+        players[who].addBet( currentBet );
+        System.out.println( describePerson( players[who] ) );
+
+        who = ( who + 1 ) % NUMBER_OF_PLAYERS;
+        currentBet = makeBet( who, dealer );
+        // System.out.println( stringBet( who, dealer, currentBet ) );
+        players[who].addBet( currentBet );
+        System.out.println( describePerson( players[who] ) );
+
+        who = ( who + 1 ) % NUMBER_OF_PLAYERS;
+        currentBet = makeBet( who, dealer );
+        // System.out.println( stringBet( who, dealer, currentBet ) );
+        players[who].addBet( currentBet );
+        System.out.println( describePerson( players[who] ) );
+
+        System.out.println();
+
+        // Make moves
+        who = dealer; // whose turn is it?
+
+        who++;
+        System.out.println( doMove( who, dealer ) );
+
+        who++;
+        System.out.println( doMove( who, dealer ) );
+
+        who++;
+        System.out.println( doMove( who, dealer ) );
+
+        System.out.println( doMove( dealer, dealer ) );
+
+        // check victories, shuffle bets around
+
+        who = dealer;
+
+        for ( int i = 0; i < NUMBER_OF_PLAYERS - 1; i++ )
+        {
+            consolidateBets( who, dealer );
+        }
+
+        cleanHands();
+
+        // System.out.println( deck1.toString() );
+
+        // System.out.println( printStats( testStats( 250 ) ) );
+    }
+
+
+    int consolidateBets( int who, int dealer )
+    {
+        who = ( who + 1 ) % NUMBER_OF_PLAYERS;
+        int result = result( players[dealer], players[who] );
+
+        if ( result == -2 )
+        {
+            players[who].addBet( players[who].getBet() / 2 );
+            players[dealer].addChips( players[who].getBet() );
+            players[who].resetBet();
+        }
+        else if ( result == -1 )
+        {
+            players[dealer].addChips( players[who].getBet() );
+            players[who].resetBet();
+        }
+        else if ( result == 1 )
+        {
+            players[dealer].addBet( players[who].getBet() );
+            players[who].addChips( 2 * players[who].getBet() );
+            players[who].resetBet();
+            players[dealer].resetBet();
+        }
+        else if ( result == 2 )
+        {
+            players[who].addBet( players[who].getBet() / 2 );
+            players[dealer].addBet( players[who].getBet() );
+            players[who].addChips( 2 * players[who].getBet() );
+            players[who].resetBet();
+            players[dealer].resetBet();
+        }
+        // if == 0, don't do anything
+        return result;
+    }
+
+
+    String resultToString( int result )
+    {
+        // -2: dealer blackjack
+        //
+        // -1: dealer wins
+        //
+        // 0: tie
+        //
+        // 1: player wins
+        //
+        // 2: player blackjack
+
+        if ( result <= -2 )
+        {
+            return "dealer blackjack";
+        }
+        else if ( result == -1 )
+        {
+            return "dealer win";
+        }
+        else if ( result == 0 )
+        {
+            return "push";
+        }
+        else if ( result == 1 )
+        {
+            return "player win";
+        }
+        else
+        {
+            return "player blackjack";
+        }
+    }
+
+
+    String describePerson( Player p )
+    {
+        String s = p.getName();
+        s += "\nhas " + p.getChips() + " chips";
+        s += "\ncurrently betting " + p.getBet() + " chips";
+        // s += "\nHand: " + p.printHand();
+        // s += "\nWith a value of " + p.getHandValue();
+        s += "\n";
+        return s;
+    }
+
+
+    String stringBet( int whoseTurn, int dealer, int bet )
+    {
+        whoseTurn %= NUMBER_OF_PLAYERS;
+        dealer %= NUMBER_OF_PLAYERS;
+
+        if ( whoseTurn == dealer )
+        {
+            return "The dealer does not bet!";
+        }
+
+        return makeIntroduction( whoseTurn, dealer ) + " bet " + bet;
+    }
+
+
+    int makeBet( int whoseTurn, int dealer )
+    {
+        whoseTurn %= NUMBER_OF_PLAYERS;
+        dealer %= NUMBER_OF_PLAYERS;
+
+        if ( whoseTurn == dealer )
+        {
+            return 0;
+        }
+        int cash = players[whoseTurn].sumChips();
+        return betAI.calculateBet( cash, skill[whoseTurn], deck1.getSize() );
+    }
+
+
+    String makeIntroduction( int whoseTurn, int dealer )
+    {
+        String s = players[whoseTurn].getName();
+
+        if ( whoseTurn == dealer )
+        {
+            s += " the dealer";
+        }
+        s += "'s turn:";
+        return s;
     }
 
 
@@ -112,13 +297,7 @@ public class Blackjack
         whoseTurn %= NUMBER_OF_PLAYERS;
         dealer %= NUMBER_OF_PLAYERS;
 
-        String s = players[whoseTurn].getName();
-
-        if ( whoseTurn == dealer )
-        {
-            s += " the dealer";
-        }
-        s += "'s turn:";
+        String s = makeIntroduction( whoseTurn, dealer );
 
         chooseMove( whoseTurn, dealer );
 
@@ -141,57 +320,22 @@ public class Blackjack
     }
 
 
-    int[] testStats( int howManyTimes )
+    public void updateSkill()
     {
-        int[] stats = new int[33];
-        // stats[30] = player wins
-        // stats[31] = draws
-        // stats[32] = dealer wins
-
-        for ( int i = 0; i < howManyTimes; i++ )
+        for ( int i = 0; i < NUMBER_OF_PLAYERS; i++ )
         {
-            deal();
-
-            // love.dealerStrategy( players[1], deck1 );
-            // love.guessingStrategy( players[1], players[0], deck1 );
-            // love.randomStrategy( players[1], deck1 );
-             love.peekingStrategy( players[1], players[0], deck1 );
-            // love.wikipediaStrategy( players[1], players[0], deck1 );
-            love.dealerStrategy( players[0], deck1 );
-            stats[players[1].getHandValue()]++;
-
-            int result = result( players[0], players[1] );
-            if ( result > 0 )
-                stats[30]++;
-            else if ( result == 0 )
-                stats[31]++;
-            else
-                stats[32]++;
-        }
-
-        return stats;
-    }
-
-
-    String printStats( int[] stats )
-    {
-        String s = "";
-        for ( int i = 0; i < 30; i++ )
-        {
-            s += i + "\t";
-            for ( int j = 0; j < stats[i]; j++ )
+            int change = 0;
+            double d = Math.random();
+            if ( ( skill[i] == 2 && d > 0.5 ) || ( d < 0.1 && skill[i] != -1 ) )
             {
-                s += "X";
+                change = -1;
             }
-            s += "\n";
+            else if ( d > 0.7 && skill[i] != 2 )
+            {
+                change = 1;
+            }
+            skill[i] += change;
         }
-
-        s += "Player wins: " + stats[30] + "\n";
-        s += "Draws:       " + stats[31] + "\n";
-        s += "Dealer wins: " + stats[32] + "\n";
-        s += "Win rate:    " + ( stats[30] + 0.1 - 0.1 )
-            / ( stats[30] + stats[31] + stats[32] ) + "\n";
-        return s;
     }
 
 
@@ -223,9 +367,15 @@ public class Blackjack
         int pCards = p.getHand().size();
 
         if ( pCards == 2 && pHand == 21 )
+        {
+            if ( dCards == 2 && dHand == 21 )
+                return 0;
             return 2;
+        }
         if ( dCards == 2 && dHand == 21 )
+        {
             return -2;
+        }
         if ( dHand > 21 )
         {
             return 1;
@@ -247,12 +397,13 @@ public class Blackjack
     }
 
 
-    void deal()
+    String deal()
     {
+        String s = "";
         cleanHands();
         if ( deck1.getSize() < LIMIT )
         {
-            System.out.println( "\nRESET THE DECK\n" );
+            s = "\nReshuffling\n";
             resetDeck();
         }
         for ( int i = 0; i < players.length; i++ )
@@ -263,6 +414,7 @@ public class Blackjack
         {
             players[i].addCard( deck1.draw() );
         }
+        return s;
     }
 
 
@@ -274,6 +426,7 @@ public class Blackjack
             p.resetHand();
             for ( Card c : hand )
             {
+                betAI.update( c );
                 discardPile.push( c );
             }
         }
@@ -282,6 +435,7 @@ public class Blackjack
 
     public int resetDeck()
     {
+        betAI.reset();
         while ( !discardPile.isEmpty() )
         {
             deck1.collect( discardPile.pop() );
@@ -290,4 +444,62 @@ public class Blackjack
 
         return deck1.getSize();
     }
+
+    // /**
+    // * The below is for testing purposes only
+    // */
+    //
+    // private int[] testStats( int howManyTimes )
+    // {
+    // int[] stats = new int[33];
+    // // stats[30] = player wins
+    // // stats[31] = draws
+    // // stats[32] = dealer wins
+    //
+    // for ( int i = 0; i < howManyTimes; i++ )
+    // {
+    // deal();
+    //
+    // // love.dealerStrategy( players[1], deck1 );
+    // // love.guessingStrategy( players[1], players[0], deck1 );
+    // // love.randomStrategy( players[1], deck1 );
+    // love.peekingStrategy( players[1], players[0], deck1 );
+    // // love.wikipediaStrategy( players[1], players[0], deck1 );
+    // love.dealerStrategy( players[0], deck1 );
+    // stats[players[1].getHandValue()]++;
+    //
+    // int result = result( players[0], players[1] );
+    // if ( result > 0 )
+    // stats[30]++;
+    // else if ( result == 0 )
+    // stats[31]++;
+    // else
+    // stats[32]++;
+    // }
+    //
+    // return stats;
+    // }
+    //
+    //
+    // private String printStats( int[] stats )
+    // {
+    // String s = "";
+    // for ( int i = 0; i < 30; i++ )
+    // {
+    // s += i + "\t";
+    // for ( int j = 0; j < stats[i]; j++ )
+    // {
+    // s += "X";
+    // }
+    // s += "\n";
+    // }
+    //
+    // s += "Player wins: " + stats[30] + "\n";
+    // s += "Draws:       " + stats[31] + "\n";
+    // s += "Dealer wins: " + stats[32] + "\n";
+    // s += "Win rate:    " + ( stats[30] + 0.1 - 0.1 )
+    // / ( stats[30] + stats[31] + stats[32] ) + "\n";
+    // return s;
+    // }
+
 }
