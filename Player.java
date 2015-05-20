@@ -6,16 +6,16 @@ import java.util.List;
 
 /**
  * This is the player class. Holds and receives cards. It also enacts actions
- * within itself. It represents a player n the game of blackjack.
+ * within itself. It represents a player in the game of blackjack.
  *
- * @author dzhang640
+ * @author Andrew Lee and Derek Zhang
  * @version May 20, 2015
- * @author Period: TODO
+ * @author Period: 6
  * @author Assignment: ALDZ_Blackjack
  *
  * @author Sources: TODO
  */
-public class Player
+public class Player implements Comparable<Player>
 {
     private String name;
 
@@ -23,13 +23,11 @@ public class Player
 
     private Card pocket;
 
-    private int chips; // 1 5 25 100
+    private int chips;
 
     private boolean stayed;
 
     private int currentBet;
-
-    private Player secondHand;
 
 
     /**
@@ -37,7 +35,6 @@ public class Player
      */
     public Player()
     {
-        secondHand = null;
         name = "";
         hand = new LinkedList<Card>();
         chips = 2000;
@@ -48,7 +45,22 @@ public class Player
 
 
     /**
+     * 
+     * This transfers this Player's current bet to the other Player
+     * 
+     * @param other
+     *            the other Player to which the bet is given
+     */
+    void transferBet( Player other )
+    {
+        other.addChips( currentBet );
+        currentBet = 0;
+    }
+
+
+    /**
      * Gives the name for the player class.
+     * 
      * @return the name of the player.
      */
     String getName()
@@ -59,7 +71,9 @@ public class Player
 
     /**
      * Sets a new name for the player class.
-     * @param inputName the desired name
+     * 
+     * @param inputName
+     *            the desired name
      * @return the previous name of the class.
      */
     String setName( String inputName )
@@ -72,6 +86,7 @@ public class Player
 
     /**
      * Checks if the player has an ace
+     * 
      * @return whether the player has an ace
      */
     public boolean hasAce()
@@ -85,7 +100,9 @@ public class Player
 
     /**
      * Adds a card to the player's hand
-     * @param card The card to be added
+     * 
+     * @param card
+     *            The card to be added
      */
     public void addCard( Card card )
     {
@@ -104,6 +121,7 @@ public class Player
 
     /**
      * Returns the list of cards of the player
+     * 
      * @return the hand of cards
      */
     public List<Card> getHand()
@@ -114,6 +132,7 @@ public class Player
 
     /**
      * Prints the hand of the player
+     * 
      * @return a list of cards of the player's hands
      */
     public String printHand()
@@ -133,6 +152,7 @@ public class Player
 
     /**
      * Gives the blackjack value of the player's hand
+     * 
      * @return the blackjack value of the player's hand
      */
     public int getHandValue()
@@ -170,22 +190,25 @@ public class Player
         hand.set( 0, pocket );
         pocket = temp;
     }
-    
+
+
     /**
      * Adds a card to the pocket
-     * @param card Card to be pocketed
+     * 
+     * @param card
+     *            Card to be pocketed
      */
-    public void addPocket(Card card)
+    public void addPocket( Card card )
     {
         pocket = card;
     }
 
 
-    // abstract void makeMove( int whatAction );
-
     /**
      * Sets the value of the chips
-     * @param newChips new value of chips
+     * 
+     * @param newChips
+     *            new value of chips
      * @return old value of chips
      */
     public int setChips( int newChips )
@@ -194,14 +217,13 @@ public class Player
         chips = newChips;
         return temp;
     }
-    
-    
-    
 
 
     /**
      * Adds to the value of the chips
-     * @param newChips amount to be added
+     * 
+     * @param newChips
+     *            amount to be added
      */
     public void addChips( int newChips )
     {
@@ -211,7 +233,9 @@ public class Player
 
     /**
      * Adds to the current bet
-     * @param bet Amount to be added
+     * 
+     * @param bet
+     *            Amount to be added
      * @return the new bet amount
      */
     public int addBet( int bet )
@@ -238,6 +262,7 @@ public class Player
 
     /**
      * Gives the amount of chips the player has
+     * 
      * @return the amount of chips
      */
     public int getChips()
@@ -248,6 +273,7 @@ public class Player
 
     /**
      * Returns the name and number of chips
+     * 
      * @return the name and number of chips
      */
     public String stringChips()
@@ -256,12 +282,10 @@ public class Player
     }
 
 
-
-
-
     /**
      * Gets the current bet of the player
-     * @return the current bet 
+     * 
+     * @return the current bet
      */
     public int getBet()
     {
@@ -271,6 +295,7 @@ public class Player
 
     /**
      * Changes whether the current player has stayed or gone
+     * 
      * @param boo
      */
     public void changeStayed( boolean boo )
@@ -281,6 +306,7 @@ public class Player
 
     /**
      * Checks if the player has stayed
+     * 
      * @return whether the player is stayed or not
      */
     public boolean isStayed()
@@ -291,11 +317,11 @@ public class Player
 
     /**
      * Doubles the bet and forces the player to stay
+     * 
      * @return whether the doubledown was successful
      */
     public boolean doubleDown()
     {
-
 
         if ( chips >= currentBet )
         {
@@ -309,7 +335,9 @@ public class Player
 
     /**
      * Compares the chip value to another player
-     * @param other player being compared to
+     * 
+     * @param other
+     *            player being compared to
      * @return This chip value minus the other chip value
      */
     public int compareTo( Player other )
@@ -320,7 +348,9 @@ public class Player
 
     /**
      * Checks whether chip values are equal
-     * @param other Player being compared
+     * 
+     * @param other
+     *            Player being compared
      * @return whether chip values are equal
      */
     public boolean equals( Player other )
