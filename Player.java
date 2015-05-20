@@ -162,7 +162,7 @@ public class Player
 
 
     /**
-     * Swaps a card into the packet
+     * Swaps the first card of the hand into the pocket
      */
     public void swapCard()
     {
@@ -171,6 +171,10 @@ public class Player
         pocket = temp;
     }
     
+    /**
+     * Adds a card to the pocket
+     * @param card Card to be pocketed
+     */
     public void addPocket(Card card)
     {
         pocket = card;
@@ -179,20 +183,37 @@ public class Player
 
     // abstract void makeMove( int whatAction );
 
+    /**
+     * Sets the value of the chips
+     * @param newChips new value of chips
+     * @return old value of chips
+     */
     public int setChips( int newChips )
     {
         int temp = getChips();
         chips = newChips;
         return temp;
     }
+    
+    
+    
 
 
+    /**
+     * Adds to the value of the chips
+     * @param newChips amount to be added
+     */
     public void addChips( int newChips )
     {
         chips += newChips;
     }
 
 
+    /**
+     * Adds to the current bet
+     * @param bet Amount to be added
+     * @return the new bet amount
+     */
     public int addBet( int bet )
     {
         if ( chips < bet )
@@ -206,60 +227,79 @@ public class Player
     }
 
 
+    /**
+     * Reduces the current bet to 0.
+     */
     public void resetBet()
     {
         currentBet = 0;
     }
 
 
+    /**
+     * Gives the amount of chips the player has
+     * @return the amount of chips
+     */
     public int getChips()
     {
         return chips;
     }
 
 
+    /**
+     * Returns the name and number of chips
+     * @return the name and number of chips
+     */
     public String stringChips()
     {
         return name + "\thas " + chips + "\tchips";
     }
 
 
-    public int sumChips()
-    {
-        return chips;
-    }
 
 
-    public int sumBet()
-    {
-        return currentBet;
-    }
 
-
+    /**
+     * Gets the current bet of the player
+     * @return the current bet 
+     */
     public int getBet()
     {
         return currentBet;
     }
 
 
+    /**
+     * Changes whether the current player has stayed or gone
+     * @param boo
+     */
     public void changeStayed( boolean boo )
     {
         stayed = boo;
     }
 
 
+    /**
+     * Checks if the player has stayed
+     * @return whether the player is stayed or not
+     */
     public boolean isStayed()
     {
         return stayed;
     }
 
 
+    /**
+     * Doubles the bet and forces the player to stay
+     * @return whether the doubledown was successful
+     */
     public boolean doubleDown()
     {
-        stayed = true;
+
 
         if ( chips >= currentBet )
         {
+            stayed = true;
             addBet( currentBet );
             return true;
         }
@@ -267,15 +307,25 @@ public class Player
     }
 
 
+    /**
+     * Compares the chip value to another player
+     * @param other player being compared to
+     * @return This chip value minus the other chip value
+     */
     public int compareTo( Player other )
     {
-        return this.sumChips() - other.sumChips();
+        return this.getChips() - other.getChips();
     }
 
 
+    /**
+     * Checks whether chip values are equal
+     * @param other Player being compared
+     * @return whether chip values are equal
+     */
     public boolean equals( Player other )
     {
-        return this.sumChips() == other.sumChips();
+        return this.getChips() == other.getChips();
     }
 
 }
