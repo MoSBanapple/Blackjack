@@ -2,37 +2,31 @@ package aldz_Blackjack;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 
 public class Player
 {
-    String name;
+    private String name;
 
-    List<Card> hand;
+    private List<Card> hand;
 
-    Card pocket;
+    private Card pocket;
 
-    int[] chips; // 1 5 25 100
+    private int chips; // 1 5 25 100
 
-    boolean stayed;
-    
-    int[] currentBet;
+    private boolean stayed;
 
-    boolean surrendered;
-    
-    Player secondHand;
+    private int currentBet;
+
 
     public Player()
     {
         name = "";
         hand = new LinkedList<Card>();
-        chips = new int[] { 25, 15, 20, 14 };
+        chips = 2000;
         stayed = false;
         pocket = null;
-        currentBet = new int[4];
-        surrendered = false;
-        secondHand = null;
+        currentBet = 0;
     }
 
 
@@ -94,12 +88,7 @@ public class Player
 
     public int getHandValue()
     {
-        if (surrendered)
-        {
-            return -1;
-        }
         int elevens = 0;
-        int i = 0;
 
         int sum = 0;
         for ( Card c : hand )
@@ -118,59 +107,53 @@ public class Player
                 elevens--;
                 sum -= 10;
             }
-            i++;
         }
         return sum;
     }
 
 
-    public boolean swapCard()
+    public void swapCard()
     {
         Card temp = hand.get( 0 );
         hand.set( 0, pocket );
         pocket = temp;
-        Random rand = new Random();
-        return rand.nextInt( 4 ) == 0;
     }
 
 
     // abstract void makeMove( int whatAction );
 
-    public int[] setChips( int one, int five, int twentyfive, int hundred )
+    public int setChips( int newChips )
     {
-        int[] temp = getChips();
-        chips[0] = one;
-        chips[1] = five;
-        chips[2] = twentyfive;
-        chips[3] = hundred;
+        int temp = getChips();
+        chips = newChips;
         return temp;
     }
-    
-    public int[] addBet(int[] bet)
+
+    public void addChips( int newChips )
     {
-        for (int j = 0; j < chips.length; j++)
+        chips += newChips;
+    }
+    
+
+    public int addBet( int bet )
+    {
+        if ( chips < bet )
         {
-            if (bet[j] < chips[j])
-            {
-                chips[j] -= bet[j];
-                currentBet[j] += bet[j];
-            }
-            else
-            {
-                currentBet[j] += chips[j];
-                chips[j] = 0;
-                 
-            }
+            bet = chips;
         }
-        if (secondHand != null)
-        {
-            secondHand.addBet( bet );
-        }
+
+        chips -= bet;
+        currentBet += bet;
         return bet;
     }
+    
+    public void resetBet()
+    {
+        currentBet = 0;
+    }
+    
 
-
-    public int[] getChips()
+    public int getChips()
     {
         return chips;
     }
@@ -178,118 +161,47 @@ public class Player
 
     public String stringChips()
     {
-        String s = "1:\t" + chips[0] + "\n";
-        s += "5:\t" + chips[1] + "\n";
-        s += "25:\t" + chips[2] + "\n";
-        s += "100:\t" + chips[3] + "\n";
-        s += "sum:\t" + sumChips();
-        return s;
+        return name + "\thas " + chips + "\tchips";
     }
 
 
     public int sumChips()
     {
-        int sum = chips[0];
-        sum += 5 * chips[1];
-        sum += 25 * chips[2];
-        sum += 100 * chips[3];
-        return sum;
+        return chips;
     }
-    
+
+
     public int sumBet()
     {
-        int sum = currentBet[0];
-        sum += 5 * currentBet[1];
-        sum += 25 * currentBet[2];
-        sum += 100 * currentBet[3];
-        return sum;
-    }
-
-
-    public void changeStayed(boolean boo)
-    {
-        stayed = boo;
-        if (secondHand != null)
-        {
-            secondHand.stayed = boo;
-        }
+        return currentBet;
     }
     
+    public int getBet()
+    {
+        return currentBet;
+    }
+
+    public void changeStayed( boolean boo )
+    {
+        stayed = boo;
+    }
+
+
     public boolean isStayed()
     {
         return stayed;
     }
-    
-    public void doubleDown()
-    {
-        int[] values = new int[]{1, 5, 25, 100};
-        stayed = true;
-        int sum = this.sumChips();
-        int add = 0;
-        for (int j = chips.length - 1; j >= 0; j--)
-        {
-            while (chips[j] > 0 && add + values[j] > sum );
-            {
-                chips[j] --;
-                currentBet[j] ++;
-                add += values[j];
-            }
-        }
-        if (secondHand != null)
-        {
-            //doubledown from main person;s chips
-        }
-        
-    }
-    public void surrender()
+
+
+    public boolean doubleDown()
     {
         stayed = true;
-        surrendered = true;
-        for (int j = 0; j < chips.length; j++)
-        {
-            chips[j] += currentBet[j] - currentBet[j]/2;
-            currentBet[j] /= 2;
-        }
-        
-    }
-    
-    public void split()
-    {
-        if (hand.size() > 2)
-        {
-            return;
-        }
-        
-        secondHand = new Player();
-        secondHand.setChips( currentBet[0], currentBet[1],currentBet[2],currentBet[3] );
-        secondHand.addBet( currentBet );
-        
-    }
-    
-    public Player splitHand()
-    {
-        return secondHand;
-    }
-    
 
-    
-    public Card[] reconcileSplit()
-    {
-        Card[] result = null;
-        if (secondHand != null)
+        if ( chips >= currentBet )
         {
-            result = new Card[secondHand.getHand().size()];
-            for (int j = 0; j < result.length; j++)
-            {
-                result[j] = secondHand.getHand().get( j );
-            }
-
-            for (int j = 0; j < chips.length; j++)
-            {
-                chips[j] += secondHand.getChips()[j];
-            }
-            secondHand = null;
+            addBet( currentBet );
+            return true;
         }
-        return result;
+        return false;
     }
 }
