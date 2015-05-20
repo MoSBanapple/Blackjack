@@ -183,7 +183,7 @@ public class Blackjack
 
         for ( int i = 0; i < NUMBER_OF_PLAYERS; i++ )
         {
-            consolidateBets( who, dealer );
+            consolidateBets( i, dealer );
         }
 
         cleanHands();
@@ -204,31 +204,24 @@ public class Blackjack
         if ( result == -2 )
         {
             players[who].addBet( players[who].getBet() / 2 );
-            players[dealer].addChips( players[who].getBet() );
+            players[who].transferBet( players[dealer] );
         }
         else if ( result == -1 )
         {
-            players[dealer].addChips( players[who].getBet() );
+            players[who].transferBet( players[dealer] );
         }
         else if ( result == 1 )
         {
             players[dealer].addBet( players[who].getBet() );
-            players[who].addChips( 2 * players[who].getBet() );
-
+            players[dealer].transferBet( players[who] );
+            players[who].transferBet( players[who] );
         }
         else if ( result == 2 )
         {
-            players[who].addBet( players[who].getBet() / 2 );
-            players[dealer].addBet( players[who].getBet() );
-            players[who].addChips( 2 * players[who].getBet() );
+            players[dealer].addBet( players[who].getBet() * 3 / 2 );
+            players[dealer].transferBet( players[who] );
+            players[who].transferBet( players[who] );
         }
-        else if (result == 0)
-         {
-             return result;
-         }
-        
-        players[who].resetBet();
-        players[dealer].resetBet();
         return result;
     }
 
