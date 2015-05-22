@@ -1,5 +1,15 @@
 package aldz_Blackjack;
 
+/**
+ *  This class represents a standard poker card in the game of BlackJack
+ *
+ * @author Andrew Lee and Derek Zhang
+ * @version May 20, 2015
+ * @author Period: 6
+ * @author Assignment: ALDZ_Blackjack
+ *
+ * @author Sources: NA
+ */
 public class Card
 {
     private int value;
@@ -20,12 +30,20 @@ public class Card
     }
 
 
+    /**
+     * Returns the number value of the card
+     * @return the number value of the card
+     */
     public int getValue()
     {
         return value;
     }
 
 
+    /**
+     * Returns the blackjack value of the card
+     * @return the blackjack value of the card
+     */
     public int getBlackValue()
     {
         if ( value > 10 )
