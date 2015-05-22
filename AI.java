@@ -3,11 +3,26 @@ package aldz_Blackjack;
 import java.util.*;
 
 
+/**
+ * This class represents the AI of the computer players within the blackjack
+ * game. This AI determines what action the player takes every turn. There are
+ * multiple different AIs that determine actions differently.
+ *
+ * @author dzhang640
+ * @version May 20, 2015
+ * @author Period: TODO
+ * @author Assignment: ALDZ_Blackjack
+ *
+ * @author Sources: TODO
+ */
 public class AI
 {
     private Random rand;
 
 
+    /**
+     * This is the constructor for the AI class.
+     */
     public AI()
     {
         rand = new Random();
@@ -160,10 +175,7 @@ public class AI
         int unrevealed = dealer.getHand().get( 1 ).getBlackValue();
         if ( unrevealed == 1 )
             unrevealed += 10;
-        // TODO chart in wikipedia
-        // add a boolean pair() method in Player?
-        // add a int numAces() method in Player?
-        // add a boolean soft() method in Player?
+
 
         // the following assumes you have a hard total.
         int total = p.getHandValue();
