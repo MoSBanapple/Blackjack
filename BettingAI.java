@@ -1,5 +1,15 @@
 package aldz_Blackjack;
 
+/**
+ * This AI determines how much each AI bets during his or her turn.
+ *
+ * @author dzhang640
+ * @version May 20, 2015
+ * @author Period: TODO
+ * @author Assignment: ALDZ_Blackjack
+ *
+ * @author Sources: TODO
+ */
 public class BettingAI
 {
     private int hiLo;
@@ -241,44 +251,4 @@ public class BettingAI
         return betAmount;
     }
 
-    // public int getHiLo()
-    // {
-    // return hiLo;
-    // }
-    //
-    //
-    // public int getHiOptI()
-    // {
-    // return hiOptI;
-    // }
-    //
-    //
-    // public int getHiOptII()
-    // {
-    // return hiOptII;
-    // }
-    //
-    //
-    // public int getKO()
-    // {
-    // return ko;
-    // }
-    //
-    //
-    // public int getOmegaII()
-    // {
-    // return omegaII;
-    // }
-    //
-    //
-    // public int getRed7()
-    // {
-    // return red;
-    // }
-    //
-    //
-    // public int getZenCount()
-    // {
-    // return zen;
-    // }
 }
