@@ -6,13 +6,23 @@ import java.util.Queue;
 import java.util.Random;
 
 
+/**
+ * This class represents the deck of cards.
+ *
+ * @author Andrew Lee and Derek Zhang
+ * @version May 20, 2015
+ * @author Period: 6
+ * @author Assignment: ALDZ_Blackjack
+ *
+ * @author Sources: NA
+ */
 public class Deck
 {
-    Queue<Card> cards;
+    private Queue<Card> cards;
 
-    Random rand;
+    private Random rand;
 
-    int size;
+    private int size;
 
 
     /**
@@ -119,12 +129,22 @@ public class Deck
     }
 
 
+    /**
+     * Gets the current size of the deck
+     * 
+     * @return the current size
+     */
     public int getSize()
     {
         return size;
     }
 
 
+    /**
+     * Prints info of the deck
+     * 
+     * @return String of the deck
+     */
     public String toString()
     {
         String result = "";
