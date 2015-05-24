@@ -9,8 +9,8 @@ import java.util.Random;
 /**
  * This class represents the deck of cards.
  *
- * @author Andrew Lee and Derek Zhang
- * @version May 20, 2015
+ * @author Derek Zhang and Andrew Lee
+ * @version May 23, 2015
  * @author Period: 6
  * @author Assignment: ALDZ_Blackjack
  *
@@ -155,5 +155,4 @@ public class Deck
         }
         return result;
     }
-
 }
