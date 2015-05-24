@@ -7,7 +7,7 @@ import java.util.*;
  * The main class for the <i>Blackjack</i> application.
  *
  * @author Andrew Lee and Derek Zhang
- * @version May 23, 2015
+ * @version May 24, 2015
  * @author Period: 6
  * @author Assignment: ALDZ_Blackjack
  *
@@ -15,23 +15,23 @@ import java.util.*;
  */
 public class Blackjack
 {
-    Player[] players;
+    private Player[] players;
 
-    int[] skill;
+    private int[] skill;
 
-    Deck deck1;
+    private Deck deck1;
 
-    AI love;
+    private AI love;
 
-    BettingAI betAI;
+    private BettingAI betAI;
 
-    Stack<Card> discardPile;
+    private Stack<Card> discardPile;
 
     private static final int LIMIT = 26;
 
     private static final int NUMBER_OF_PLAYERS = 4;
 
-    Scanner scan;
+    private Scanner scan;
 
     private int humanIndex;
 
@@ -77,10 +77,10 @@ public class Blackjack
         {
             if ( i != humanIndex )
             {
-                String tempName = NAME[(int)( Math.random() * 26 )];
+                String tempName = NAME[(int)( Math.random() * NAME.length )];
                 while ( tempName.compareToIgnoreCase( name ) == 0 )
                 {
-                    tempName = NAME[(int)( Math.random() * 26 )];
+                    tempName = NAME[(int)( Math.random() * NAME.length )];
                 }
                 players[i].setName( tempName );
             }
@@ -96,6 +96,11 @@ public class Blackjack
         deck1.shuffle();
         // System.out.println("test");
         // System.out.println(deck1.toString());
+
+        Card c = deck1.draw();
+        System.out.println( "You sneak a card into your sleeve! It is the "
+            + c.toString() + "." );
+        players[humanIndex].addPocket( c );
     }
 
 
@@ -126,13 +131,16 @@ public class Blackjack
                 if ( p.getChips() <= 0 )
                 {
                     Arrays.sort( players );
+                    int index = NUMBER_OF_PLAYERS;
+
                     System.out.println( "GAME OVER" );
                     for ( Player play : players )
                     {
                         play.addChips( play.getBet() );
                         play.resetBet();
-                        System.out.println( play.getName() + " has "
-                            + play.getChips() + " chips." );
+                        System.out.println( index + ": " + play.getName()
+                            + " has " + play.getChips() + " chips." );
+                        index--;
                     }
                     return;
                 }
@@ -158,33 +166,9 @@ public class Blackjack
         // System.out.println( Arrays.toString( skill ) );
         dealer %= NUMBER_OF_PLAYERS;
 
-        // int who = dealer; // whose turn is it?
-
         System.out.println( deal() );
 
-        // Dealer
-        // System.out.println( describePerson( players[dealer] ) );
-
         int currentBet = 0;
-        // determine bets
-        // who = ( who + 1 ) % NUMBER_OF_PLAYERS;
-        // currentBet = makeBet( who, dealer );
-        // // System.out.println( stringBet( who, dealer, currentBet ) );
-        // players[who].addBet( currentBet );
-        // System.out.println( describePerson( players[who] ) );
-        //
-        // who = ( who + 1 ) % NUMBER_OF_PLAYERS;
-        // currentBet = makeBet( who, dealer );
-        // // System.out.println( stringBet( who, dealer, currentBet ) );
-        // players[who].addBet( currentBet );
-        // System.out.println( describePerson( players[who] ) );
-        //
-        // who = ( who + 1 ) % NUMBER_OF_PLAYERS;
-        // currentBet = makeBet( who, dealer );
-        // // System.out.println( stringBet( who, dealer, currentBet ) );
-        // players[who].addBet( currentBet );
-        // System.out.println( describePerson( players[who] ) );
-
         int j = 0;
         for ( int i = dealer; j < NUMBER_OF_PLAYERS; i = ( i + 1 )
             % NUMBER_OF_PLAYERS )
@@ -212,8 +196,6 @@ public class Blackjack
 
         System.out.println();
         // Make moves
-        // who = dealer; // whose turn is it?
-
         j = 0;
         for ( int i = ( dealer + 1 ) % NUMBER_OF_PLAYERS; j < NUMBER_OF_PLAYERS; i = ( i + 1 )
             % NUMBER_OF_PLAYERS )
@@ -293,6 +275,11 @@ public class Blackjack
         {
             players[dealer].addBet( players[who].getBet() * 3 / 2 );
             players[dealer].transferBet( players[who] );
+            players[who].transferBet( players[who] );
+        }
+        else
+        {
+            // if result == 0
             players[who].transferBet( players[who] );
         }
         return result;
@@ -377,8 +364,7 @@ public class Blackjack
         if ( whoseTurn == humanIndex )
         {
             System.out.println( "Make your bet! You have "
-                + players[humanIndex].getChips() + " chips and already have "
-                + players[humanIndex].getBet() + " chips on the table." );
+                + players[humanIndex].getChips() + " chips." );
             String s = scan.nextLine();
             int val;
             while ( true )
@@ -450,7 +436,7 @@ public class Blackjack
 
         if ( whoseTurn == humanIndex )
         {
-            humanMove();
+            humanMove( dealer );
         }
         else
         {
@@ -475,8 +461,51 @@ public class Blackjack
     }
 
 
-    void humanMove()
+    void humanDealer()
     {
+        System.out.println( "It's your turn to be the dealer!" );
+        System.out.println( "Your hand is:\n" + players[humanIndex].printHand()
+            + "\nwith a value of " + players[humanIndex].getHandValue() );
+        cheat();
+        System.out.println( "As dealer, you have to hit until 17." );
+        love.dealerStrategy( players[humanIndex], deck1 );
+    }
+
+
+    void cheat()
+    {
+        System.out.println( "The card in your sleeve is "
+            + players[humanIndex].getPocket() );
+        System.out.println( "Enter \"cheat\" to cheat. "
+            + "Enter anything else to continue." );
+        String in = scan.nextLine();
+        if ( !in.equalsIgnoreCase( "cheat" ) )
+        {
+            return;
+        }
+
+        // switch card in sleeve to facedown card.
+        players[humanIndex].swapCard();
+        System.out.println( "Your hand is now:\n"
+            + players[humanIndex].printHand() + "\nwith a value of "
+            + players[humanIndex].getHandValue() );
+        System.out.println( "and the card in your sleeve is "
+            + players[humanIndex].getPocket() );
+    }
+
+
+    void humanMove( int dealer )
+    {
+        if ( dealer == humanIndex )
+        {
+            humanDealer();
+            return;
+        }
+
+        System.out.println( "It is now your turn. Your hand is:\n"
+            + players[humanIndex].printHand() + "\nwith a value of "
+            + players[humanIndex].getHandValue() );
+        cheat();
         System.out.println( "Make a decision! Your hand is:\n"
             + players[humanIndex].printHand() + "\nwith a value of "
             + players[humanIndex].getHandValue() );
@@ -567,7 +596,13 @@ public class Blackjack
             }
 
             System.out.println( "What is your next move?" );
-            c = scan.nextLine().charAt( 0 );
+            in = scan.nextLine();
+            while ( in.length() == 0 )
+            {
+                in = scan.nextLine();
+            }
+            c = in.charAt( 0 );
+
             while ( c != 'f' && c != 'h' && c != 's' && c != 'd' )
             {
                 System.out.println( "Please enter a valid command." );
