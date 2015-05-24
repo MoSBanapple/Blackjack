@@ -9,7 +9,7 @@ import java.util.List;
  * within itself. It represents a player in the game of blackjack.
  *
  * @author Andrew Lee and Derek Zhang
- * @version May 23, 2015
+ * @version May 24, 2015
  * @author Period: 6
  * @author Assignment: ALDZ_Blackjack
  *
@@ -202,6 +202,18 @@ public class Player implements Comparable<Player>
     public void addPocket( Card card )
     {
         pocket = card;
+    }
+
+
+    /**
+     * 
+     * Gets the Card in the pocket
+     * 
+     * @return pocket the Card in the pocket
+     */
+    public Card getPocket()
+    {
+        return pocket;
     }
 
 
