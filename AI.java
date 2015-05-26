@@ -8,12 +8,12 @@ import java.util.*;
  * game. This AI determines what action the player takes every turn. There are
  * multiple different AIs that determine actions differently.
  *
- * @author dzhang640
- * @version May 20, 2015
- * @author Period: TODO
+ * @author Andrew Lee and Derek Zhang
+ * @version May 23, 2015
+ * @author Period: 6
  * @author Assignment: ALDZ_Blackjack
  *
- * @author Sources: TODO
+ * @author Sources: na
  */
 public class AI
 {
@@ -116,6 +116,7 @@ public class AI
         else
         {
             // Surrender
+            p.changeSurrendered( true );
         }
     }
 
@@ -139,6 +140,7 @@ public class AI
         if ( dealerHand == 21 && ownHand != 21 )
         {
             // surrender
+            p.changeSurrendered( true );
             return;
         }
         while ( dealerHand < 17 )
@@ -175,7 +177,6 @@ public class AI
         int unrevealed = dealer.getHand().get( 1 ).getBlackValue();
         if ( unrevealed == 1 )
             unrevealed += 10;
-
 
         // the following assumes you have a hard total.
         int total = p.getHandValue();
@@ -216,6 +217,7 @@ public class AI
         if ( result == -1 )
         {
             // surrender
+            p.changeSurrendered( true );
             return;
         }
         else if ( result == 0 )

@@ -1,10 +1,10 @@
 package aldz_Blackjack;
 
 /**
- *  This class represents a standard poker card in the game of BlackJack
+ * This class represents a standard poker card in the game of BlackJack
  *
- * @author Andrew Lee and Derek Zhang
- * @version May 20, 2015
+ * @author Derek Zhang and Andrew Lee
+ * @version May 23, 2015
  * @author Period: 6
  * @author Assignment: ALDZ_Blackjack
  *
@@ -32,6 +32,7 @@ public class Card
 
     /**
      * Returns the number value of the card
+     * 
      * @return the number value of the card
      */
     public int getValue()
@@ -42,6 +43,7 @@ public class Card
 
     /**
      * Returns the blackjack value of the card
+     * 
      * @return the blackjack value of the card
      */
     public int getBlackValue()
@@ -57,12 +59,23 @@ public class Card
     }
 
 
+    /**
+     * 
+     * Returns the suit of the card
+     * 
+     * @return the suit of the card
+     */
     public String getSuit()
     {
         return suit;
     }
 
 
+    /**
+     * Returns the String representation of the card
+     * 
+     * @return the String representation of the card
+     */
     public String toString()
     {
         if ( value > 1 && value < 11 )

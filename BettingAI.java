@@ -3,12 +3,12 @@ package aldz_Blackjack;
 /**
  * This AI determines how much each AI bets during his or her turn.
  *
- * @author dzhang640
- * @version May 20, 2015
- * @author Period: TODO
+ * @author Andrew Lee and Derek Zhang
+ * @version May 23, 2015
+ * @author Period: 6
  * @author Assignment: ALDZ_Blackjack
  *
- * @author Sources: TODO
+ * @author Sources: NA
  */
 public class BettingAI
 {
@@ -250,5 +250,4 @@ public class BettingAI
 
         return betAmount;
     }
-
 }

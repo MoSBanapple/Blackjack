@@ -9,11 +9,11 @@ import java.util.List;
  * within itself. It represents a player in the game of blackjack.
  *
  * @author Andrew Lee and Derek Zhang
- * @version May 20, 2015
+ * @version May 24, 2015
  * @author Period: 6
  * @author Assignment: ALDZ_Blackjack
  *
- * @author Sources: TODO
+ * @author Sources: NA
  */
 public class Player implements Comparable<Player>
 {
@@ -25,7 +25,7 @@ public class Player implements Comparable<Player>
 
     private int chips;
 
-    private boolean stayed;
+    private boolean surrendered;
 
     private int currentBet;
 
@@ -38,7 +38,7 @@ public class Player implements Comparable<Player>
         name = "";
         hand = new LinkedList<Card>();
         chips = 2000;
-        stayed = false;
+        surrendered = false;
         pocket = null;
         currentBet = 0;
     }
@@ -116,6 +116,7 @@ public class Player implements Comparable<Player>
     public void resetHand()
     {
         hand = new LinkedList<Card>();
+        surrendered = false;
     }
 
 
@@ -201,6 +202,18 @@ public class Player implements Comparable<Player>
     public void addPocket( Card card )
     {
         pocket = card;
+    }
+
+
+    /**
+     * 
+     * Gets the Card in the pocket
+     * 
+     * @return pocket the Card in the pocket
+     */
+    public Card getPocket()
+    {
+        return pocket;
     }
 
 
@@ -294,13 +307,14 @@ public class Player implements Comparable<Player>
 
 
     /**
-     * Changes whether the current player has stayed or gone
+     * Changes whether the current player has surrendered
      * 
      * @param boo
+     *            user input boolean to which the surrender is changed.
      */
-    public void changeStayed( boolean boo )
+    public void changeSurrendered( boolean boo )
     {
-        stayed = boo;
+        surrendered = boo;
     }
 
 
@@ -309,9 +323,9 @@ public class Player implements Comparable<Player>
      * 
      * @return whether the player is stayed or not
      */
-    public boolean isStayed()
+    public boolean isSurrendered()
     {
-        return stayed;
+        return surrendered;
     }
 
 
@@ -325,7 +339,6 @@ public class Player implements Comparable<Player>
 
         if ( chips >= currentBet )
         {
-            stayed = true;
             addBet( currentBet );
             return true;
         }
@@ -357,5 +370,4 @@ public class Player implements Comparable<Player>
     {
         return this.getChips() == other.getChips();
     }
-
 }
