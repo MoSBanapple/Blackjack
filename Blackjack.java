@@ -35,9 +35,15 @@ public class Blackjack
 
     private int humanIndex;
 
+    private int previousChips;
+
     private static final int MIN_BET = 15;
 
     private static final int MAX_BET = 500;
+
+    private static final int MAX_ROUNDS = 16;
+
+    private static final double CHEAT_FAIL_CHANCE = 0.25;
 
     private static final String[] NAME = { "Alice", "Bob", "Capulet", "Dave",
         "Eve", "Fredrika", "George", "Hoover", "Ivan", "Jose", "Katherine",
@@ -97,6 +103,8 @@ public class Blackjack
         // System.out.println("test");
         // System.out.println(deck1.toString());
 
+        previousChips = players[humanIndex].getChips();
+
         Card c = deck1.draw();
         System.out.println( "You sneak a card into your sleeve! It is the "
             + c.toString() + "." );
@@ -118,7 +126,7 @@ public class Blackjack
         int i = 0;
         int dealer = 0;
 
-        while ( true )
+        while ( i < MAX_ROUNDS )
         {
             i++;
             System.out.println( "--ROUND " + i + "--" );
@@ -156,6 +164,18 @@ public class Blackjack
                 System.out.println( "Goodbye!" );
                 return;
             }
+        }
+
+        System.out.println( "Time is up!" );
+        Arrays.sort( players );
+        int index = NUMBER_OF_PLAYERS;
+        for ( Player play : players )
+        {
+            play.addChips( play.getBet() );
+            play.resetBet();
+            System.out.println( index + ": " + play.getName() + " has "
+                + play.getChips() + " chips." );
+            index--;
         }
     }
 
@@ -212,6 +232,9 @@ public class Blackjack
         }
 
         cleanHands();
+
+        System.out.println( "The amount of chips you have changed by "
+            + ( players[humanIndex].getChips() - previousChips ) + "." );
     }
 
 
@@ -248,7 +271,21 @@ public class Blackjack
             return 0;
         int result = result( players[dealer], players[who] );
 
-        if ( result == -3 )
+        if ( result == -4 || result == 3 )
+        {
+            // your bet to everyone
+            int bet = players[who].getBet();
+            players[who].addBet( bet * 2 );
+            players[who].resetBet();
+            for ( int i = 0; i < NUMBER_OF_PLAYERS; i++ )
+            {
+                if ( i != who )
+                {
+                    players[i].addChips( bet );
+                }
+            }
+        }
+        else if ( result == -3 )
         {
             int bet = players[who].getBet();
             int toReturn = bet / 2;
@@ -283,47 +320,6 @@ public class Blackjack
             players[who].transferBet( players[who] );
         }
         return result;
-    }
-
-
-    String resultToString( int result )
-    {
-        // -3: player surrender
-        //
-        // -2: dealer blackjack
-        //
-        // -1: dealer wins
-        //
-        // 0: tie
-        //
-        // 1: player wins
-        //
-        // 2: player blackjack
-
-        if ( result == -3 )
-        {
-            return "player surrender";
-        }
-        else if ( result == -2 )
-        {
-            return "dealer blackjack";
-        }
-        else if ( result == -1 )
-        {
-            return "dealer win";
-        }
-        else if ( result == 0 )
-        {
-            return "push";
-        }
-        else if ( result == 1 )
-        {
-            return "player win";
-        }
-        else
-        {
-            return "player blackjack";
-        }
     }
 
 
@@ -472,7 +468,7 @@ public class Blackjack
     }
 
 
-    void cheat()
+    boolean cheat()
     {
         System.out.println( "The card in your sleeve is "
             + players[humanIndex].getPocket() );
@@ -481,7 +477,7 @@ public class Blackjack
         String in = scan.nextLine();
         if ( !in.equalsIgnoreCase( "cheat" ) )
         {
-            return;
+            return false;
         }
 
         // switch card in sleeve to facedown card.
@@ -491,6 +487,20 @@ public class Blackjack
             + players[humanIndex].getHandValue() );
         System.out.println( "and the card in your sleeve is "
             + players[humanIndex].getPocket() );
+
+        if ( Math.random() < CHEAT_FAIL_CHANCE )
+        {
+            System.out.println( "You were caught cheating! "
+                + "Be prepared to face punishment..." );
+            List<Card> hand = players[humanIndex].getHand();
+            players[humanIndex].resetHand();
+            for ( Card c : hand )
+            {
+                discardPile.push( c );
+            }
+            return true;
+        }
+        return false;
     }
 
 
@@ -505,7 +515,11 @@ public class Blackjack
         System.out.println( "It is now your turn. Your hand is:\n"
             + players[humanIndex].printHand() + "\nwith a value of "
             + players[humanIndex].getHandValue() );
-        cheat();
+        if ( cheat() )
+        {
+            return;
+        }
+
         System.out.println( "Make a decision! Your hand is:\n"
             + players[humanIndex].printHand() + "\nwith a value of "
             + players[humanIndex].getHandValue() );
@@ -637,6 +651,8 @@ public class Blackjack
      * 
      * This calculates who wins a blackjack hand, between a player and a dealer.
      * 
+     * -4: player cheated
+     * 
      * -3: player surrender
      * 
      * -2: dealer blackjack
@@ -648,6 +664,8 @@ public class Blackjack
      * 1: player wins
      * 
      * 2: player blackjack
+     * 
+     * 3: dealer cheated
      * 
      * @param dealer
      *            user input Player who is the dealer of this hand
@@ -662,6 +680,14 @@ public class Blackjack
         int pHand = p.getHandValue();
         int pCards = p.getHand().size();
 
+        if ( pCards == 0 )
+        {
+            return -4;
+        }
+        if ( dCards == 0 )
+        {
+            return 3;
+        }
         if ( p.isSurrendered() )
         {
             return -3;
