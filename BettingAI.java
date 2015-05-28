@@ -4,7 +4,7 @@ package aldz_Blackjack;
  * This AI determines how much each AI bets during his or her turn.
  *
  * @author Andrew Lee and Derek Zhang
- * @version May 23, 2015
+ * @version May 27, 2015
  * @author Period: 6
  * @author Assignment: ALDZ_Blackjack
  *
@@ -249,5 +249,32 @@ public class BettingAI
         int betAmount = (int)( cash * proportionToBet );
 
         return betAmount;
+    }
+
+
+    // For Testing Purposes
+    /**
+     * 
+     * Returns the int array of all of the card counting values.
+     * 
+     * 0: hiLo
+     * 
+     * 1: hiOptI
+     * 
+     * 2: hiOptII
+     * 
+     * 3: ko
+     * 
+     * 4: omegaII
+     * 
+     * 5: red
+     * 
+     * 6: zen
+     * 
+     * @return int[] an int array containing all of the card counting values
+     */
+    public int[] getCount()
+    {
+        return new int[] { hiLo, hiOptI, hiOptII, ko, omegaII, red, zen };
     }
 }
