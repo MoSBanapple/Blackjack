@@ -16,7 +16,6 @@ import java.util.*;
 public class Blackjack
 {
     private static final String code = "AYIEKDSANALDSIE76666300";
-
     private Player[] players;
 
     private int[] skill;
@@ -45,19 +44,21 @@ public class Blackjack
 
     private static final int MAX_ROUNDS = 16;
 
-    private static final double CHEAT_FAIL_CHANCE = 0.9;
+    private static final double CHEAT_FAIL_CHANCE = 0.25;
 
     private static final String[] NAME = { "Alice", "Bob", "Capulet", "Dave",
         "Eve", "Fredrika", "George", "Hoover", "Ivan", "Jose", "Katherine",
         "Lisa", "Montague", "Nancy", "Obama", "Putin", "Que", "Rosas", "Sally",
         "Ted", "Utena", "Vern", "Walther", "XZAVIER", "Yetal",
         "Znow i know my abcs" };
-
+    
     private GameWindow window;
-
+    
     private StatusWindow cardWindow;
-
+    
     private String input;
+    
+    private NameWindow nameWindow;
 
 
     public Blackjack()
@@ -71,6 +72,7 @@ public class Blackjack
 
         scan = new Scanner( System.in );
 
+        nameWindow = new NameWindow(this);
         love = new AI();
         discardPile = new Stack<Card>();
         players = new Player[NUMBER_OF_PLAYERS];
@@ -79,13 +81,21 @@ public class Blackjack
             players[i] = new Player();
         }
 
-        System.out.println( "What is your name?" );
-        String name = scan.nextLine();
-
+        while (input.equals( code ))
+        {
+            
+        }
+        String name = input;
+        input = code;
+        
         while ( name.length() == 0 )
         {
-            System.out.println( "Please enter your name." );
-            name = scan.nextLine();
+            while (input.equals( code ))
+            {
+                
+            }
+            name = input;
+            input = code;
         }
 
         players[humanIndex].setName( name );
@@ -115,8 +125,8 @@ public class Blackjack
         // System.out.println(deck1.toString());
 
         previousChips = players[humanIndex].getChips();
-        window = new GameWindow( this );
-        cardWindow = new StatusWindow( this );
+        window = new GameWindow(this);
+        cardWindow = new StatusWindow(this);
 
         Card c = deck1.draw();
         window.message( "You sneak a card into your sleeve! It is the "
@@ -164,10 +174,11 @@ public class Blackjack
                         cardWindow.update();
                         play.addChips( play.getBet() );
                         play.resetBet();
-                        window.message( index + ": " + play.getName() + " has "
-                            + play.getChips() + " chips." );
+                        window.message( index + ": " + play.getName()
+                            + " has " + play.getChips() + " chips." );
                         index--;
                     }
+                    System.exit( 0 );
                     return;
                 }
             }
@@ -176,14 +187,14 @@ public class Blackjack
                 dealer++;
 
             cardWindow.update();
-            // window.message( "\"q\" to quit." );
-            // cardWindow.update();
-            // String response = scan.nextLine().toUpperCase();
-            // if ( response.equals( "Q" ) )
-            // {
-            // window.message( "Goodbye!" );
-            // return;
-            // }
+//            window.message( "\"q\" to quit." );
+//            cardWindow.update();
+//            String response = scan.nextLine().toUpperCase();
+//            if ( response.equals( "Q" ) )
+//            {
+//                window.message( "Goodbye!" );
+//                return;
+//            }
         }
 
         window.message( "Time is up!" );
@@ -223,7 +234,7 @@ public class Blackjack
         }
         cardWindow.update();
 
-        window.message( "" );
+        window.message("");
 
         j = 0;
         for ( int i = dealer; j < NUMBER_OF_PLAYERS; i = ( i + 1 )
@@ -238,7 +249,7 @@ public class Blackjack
         }
         cardWindow.update();
 
-        window.message( "" );
+        window.message("");
         // Make moves
         j = 0;
         for ( int i = ( dealer + 1 ) % NUMBER_OF_PLAYERS; j < NUMBER_OF_PLAYERS; i = ( i + 1 )
@@ -393,9 +404,9 @@ public class Blackjack
         {
             window.message( "Make your bet! You have "
                 + players[humanIndex].getChips() + " chips." );
-            while ( input.equals( code ) )
+            while (input.equals( code ))
             {
-
+                
             }
             String s = input;
             input = code;
@@ -412,9 +423,9 @@ public class Blackjack
                             + "\nThe minimum bet is the minimum of " + MIN_BET
                             + " and how many chips you currently have." );
                         cardWindow.update();
-                        while ( input.equals( code ) )
+                        while (input.equals( code ))
                         {
-
+                            
                         }
                         s = input;
                         input = code;
@@ -424,9 +435,9 @@ public class Blackjack
                         window.message( "Please bet a lower amount"
                             + "\nThe maximum bet is " + MAX_BET );
                         cardWindow.update();
-                        while ( input.equals( "standby" ) )
+                        while (input.equals( "standby" ))
                         {
-
+                            
                         }
                         s = input;
                         input = code;
@@ -441,9 +452,9 @@ public class Blackjack
                     window.message( "Invalid input. Please enter an integer"
                         + " value for the bet." );
                     cardWindow.update();
-                    while ( input.equals( code ) )
+                    while (input.equals( code ))
                     {
-
+                        
                     }
                     s = input;
                     input = code;
@@ -513,33 +524,7 @@ public class Blackjack
         }
         else
         {
-            int d = (int)( 5 * Math.random() ) + skill[whoseTurn];
-            if ( d == 0 )
-            {
-                love.guessingStrategy( players[whoseTurn],
-                    players[dealer],
-                    deck1 );
-            }
-            else if ( d == 1 )
-            {
-                love.randomStrategy( players[whoseTurn], deck1 );
-            }
-            else if ( d == 2 )
-            {
-                love.peekingStrategy( players[whoseTurn],
-                    players[dealer],
-                    deck1 );
-            }
-            else if ( d == 3 )
-            {
-                love.dealerStrategy( players[whoseTurn], deck1 );
-            }
-            else
-            {
-                love.wikipediaStrategy( players[whoseTurn],
-                    players[dealer],
-                    deck1 );
-            }
+            love.wikipediaStrategy( players[whoseTurn], players[dealer], deck1 );
         }
     }
 
@@ -561,9 +546,9 @@ public class Blackjack
             + players[humanIndex].getPocket() );
         window.message( "Enter \"cheat\" to cheat. "
             + "Enter anything else to continue." );
-        while ( input.equals( code ) )
+        while (input.equals( code ))
         {
-
+            
         }
         String in = input;
         input = code;
@@ -576,8 +561,9 @@ public class Blackjack
 
         // switch card in sleeve to facedown card.
         players[humanIndex].swapCard();
-        window.message( "Your hand is now:\n" + players[humanIndex].printHand()
-            + "\nwith a value of " + players[humanIndex].getHandValue() );
+        window.message( "Your hand is now:\n"
+            + players[humanIndex].printHand() + "\nwith a value of "
+            + players[humanIndex].getHandValue() );
         window.message( "and the card in your sleeve is "
             + players[humanIndex].getPocket() );
         cardWindow.update();
@@ -629,17 +615,17 @@ public class Blackjack
         // h hit
         // s stand
         // d double down
-        while ( input.equals( code ) )
+        while (input.equals( code ))
         {
-
+            
         }
         String in = input;
         input = code;
         while ( in.length() == 0 )
         {
-            while ( input.equals( code ) )
+            while (input.equals( code ))
             {
-
+                
             }
             in = input;
             input = code;
@@ -648,17 +634,17 @@ public class Blackjack
         while ( c != 'f' && c != 'h' && c != 's' && c != 'd' )
         {
             window.message( "Please enter a valid command." );
-            while ( input.equals( code ) )
+            while (input.equals( code ))
             {
-
+                
             }
             in = input;
             input = code;
             while ( in.length() == 0 )
             {
-                while ( input.equals( code ) )
+                while (input.equals( code ))
                 {
-
+                    
                 }
                 in = input;
                 input = code;
@@ -739,17 +725,17 @@ public class Blackjack
 
             cardWindow.update();
             window.message( "What is your next move?" );
-            while ( input.equals( code ) )
+            while (input.equals( code ))
             {
-
+                
             }
             in = input;
             input = code;
             while ( in.length() == 0 )
             {
-                while ( input.equals( code ) )
+                while (input.equals( code ))
                 {
-
+                    
                 }
                 in = input;
                 input = code;
@@ -762,9 +748,9 @@ public class Blackjack
                 window.message( "Please enter a valid command." );
                 window.message( "\"f\" to surrender, \"h\" to hit, "
                     + "\n\"s\" to stand, \"d\" to double down" );
-                while ( input.equals( code ) )
+                while (input.equals( code ))
                 {
-
+                    
                 }
                 c = input.charAt( 0 );
                 input = code;
@@ -921,32 +907,29 @@ public class Blackjack
         cardWindow.update();
         return deck1.getSize();
     }
-
-
+    
     public Player getHuman()
     {
         return players[humanIndex];
     }
-
-
+    
     public Player[] getPlayers()
     {
         Player[] result = new Player[players.length];
         int x = 0;
-        for ( int j = humanIndex; j < players.length; j++ )
+        for (int j = humanIndex; j < players.length; j++)
         {
             result[j - humanIndex] = players[j];
             x++;
         }
-        for ( int j = 0; j < humanIndex; j++ )
+        for (int j = 0; j < humanIndex; j++)
         {
             result[j + x] = players[j];
         }
         return result;
     }
-
-
-    public void inputChange( String change )
+    
+    public void inputChange(String change)
     {
         input = change;
     }
