@@ -11,7 +11,7 @@ import java.util.*;
  * @author Period: 6
  * @author Assignment: ALDZ_Blackjack
  *
- * @author Sources: TODO
+ * @author Sources: 
  */
 public class Blackjack
 {
@@ -46,12 +46,29 @@ public class Blackjack
 
     private static final double CHEAT_FAIL_CHANCE = 0.25;
 
-    private static final String[] NAME = { "Alice", "Bob", "Capulet", "Dave",
+    private static final String[] NAME = { "Alice", "Bob", "Capulet",
+        "Dave",
         "Eve", "Fredrika", "George", "Hoover", "Ivan", "Jose", "Katherine",
         "Lisa", "Montague", "Nancy", "Obama", "Putin", "Que", "Rosas", "Sally",
-        "Ted", "Utena", "Vern", "Walther", "XZAVIER", "Yetal",
-        "Znow i know my abcs" };
-    
+        "Ted", "Utena", "Vern", "Walther", "XZAVIER", "Yetal", "Zinnia",
+        "Washington", "Carver", "Bush", "Rin", "Fortuna", "Ferrel",
+        "Robin Williams", "Spock", "Kirk", "Antonio", "Eugeo", " Leonardo",
+        "Raphael", "Michelangelo", "Donatello", "Deadpool", "Bruce Wayne",
+        "Oak", "Gary", "Kris", "Lyra", "Burce", "Louis", "Adams", "Jefferson",
+        "Madison", "Lincoln", "Wilkes", "Waldo", "Jones", "Peter", "Plato",
+        "Aristotle", "Heracles", "Sophacles", "Peck", "Stark", "Bill Nye",
+        "Tyson", "Mrs. Frizzle", "Liz", "Clark Kent", "Arctic Seal", "Pablo",
+        "Ralphie", "Pablo", "Pedro", "Jahohoy", "Harry Potter",
+        "Percy Jackson", "Artemis Fowl", "J. K. Rowling", "Eion Colfer",
+        "Bradbury", "Guy Montag", "Salinger", "Holden", "Tim O'Brien",
+        "Hester", "Dimmesdale", "Chillingworth", "Huck Finn", "Jay Gatsby",
+        "Nick Carraway", "Tom Buchanan", "Daisy Buchanan", "Wolfsheim", "Agar",
+        "Hodor", "Fitzgerald", "Dorothy Ann", "Phoebe", "Carlos", "Wanda",
+        "Arnold", "Kesha", "Rick James", "John Cena", "Schwarzenegger",
+        "Lex Luthor", "Spassky", "Usain Bolt", "John Henry", "Humerus",
+        "Clancy", "Soap", "Price", "Zebra", "Rat", "Pig", "Goat", "Garfield",
+        "Bucky", "Bambi", "Simba", "Mufasa", "Sapphire", "Ruby", "Cronk" };
+
     private GameWindow window;
     
     private StatusWindow cardWindow;
@@ -61,6 +78,9 @@ public class Blackjack
     private NameWindow nameWindow;
 
 
+    /**
+     * The constructor for the Blackjack game.
+     */
     public Blackjack()
     {
         input = code;
@@ -99,16 +119,21 @@ public class Blackjack
         }
 
         players[humanIndex].setName( name );
+        int random = 0;
 
         for ( int i = 0; i < NUMBER_OF_PLAYERS; i++ )
         {
             if ( i != humanIndex )
             {
-                String tempName = NAME[(int)( Math.random() * NAME.length )];
+                random = (int)( Math.random() * NAME.length );
+                String tempName = NAME[random];
                 while ( tempName.compareToIgnoreCase( name ) == 0 )
                 {
-                    tempName = NAME[(int)( Math.random() * NAME.length )];
+                    random = (int)( Math.random() * NAME.length );
+                    tempName = NAME[random];
+                    
                 }
+                NAME[random] = name;
                 players[i].setName( tempName );
             }
         }
@@ -129,14 +154,19 @@ public class Blackjack
         cardWindow = new StatusWindow(this);
 
         Card c = deck1.draw();
+        cardWindow.update();
         window.message( "You sneak a card into your sleeve! It is the "
             + c.toString() + "." );
         players[humanIndex].addPocket( c );
         window.setPocket( c.toString() );
-        cardWindow.update();
+        
     }
 
 
+    /**
+     * The main method for the class.
+     * @param args arguments.
+     */
     public static void main( String[] args )
     {
         Blackjack aldz = new Blackjack();
@@ -146,7 +176,7 @@ public class Blackjack
     }
 
 
-    public void playBlackjack()
+    private void playBlackjack()
     {
         int i = 0;
         int dealer = 0;
@@ -155,11 +185,18 @@ public class Blackjack
         {
             i++;
             window.message( "--ROUND " + i + "--" );
-            cardWindow.update();
+            
             doRound( dealer );
-            window.message( "--END OF ROUND " + i + "-- CARDS LEFT: "
-                + deck1.getSize() + "\n\n" );
-            cardWindow.update();
+            window.message( "--END OF ROUND " + i + "-- CARDS LEFT IN DECK: "
+                + deck1.getSize() + "\n" );
+            window.message( "Press anything to continue." );
+            while (input.equals( code ))
+            {
+                
+            }
+            input = code;
+            window.message( "\n\n" );
+            
 
             for ( Player p : players )
             {
@@ -171,24 +208,24 @@ public class Blackjack
                     window.message( "GAME OVER" );
                     for ( Player play : players )
                     {
-                        cardWindow.update();
+                        
                         play.addChips( play.getBet() );
                         play.resetBet();
                         window.message( index + ": " + play.getName()
                             + " has " + play.getChips() + " chips." );
                         index--;
                     }
-                    System.exit( 0 );
                     return;
                 }
             }
 
             if ( i % 4 == 0 )
                 dealer++;
+            cardWindow.updateDealer( players[dealer].getName() );
 
-            cardWindow.update();
+            
 //            window.message( "\"q\" to quit." );
-//            cardWindow.update();
+//            
 //            String response = scan.nextLine().toUpperCase();
 //            if ( response.equals( "Q" ) )
 //            {
@@ -198,7 +235,7 @@ public class Blackjack
         }
 
         window.message( "Time is up!" );
-        cardWindow.update();
+        
         Arrays.sort( players );
         int index = NUMBER_OF_PLAYERS;
         for ( Player play : players )
@@ -208,17 +245,18 @@ public class Blackjack
             window.message( index + ": " + play.getName() + " has "
                 + play.getChips() + " chips." );
             index--;
-            cardWindow.update();
+            
         }
     }
 
 
-    public void doRound( int dealer )
+    private void doRound( int dealer )
     {
         updateSkill();
         // window.message( Arrays.toString( skill ) );
         dealer %= NUMBER_OF_PLAYERS;
 
+        cardWindow.updateDealer( players[dealer].getName() );
         window.message( deal() );
 
         int currentBet = 0;
@@ -227,12 +265,13 @@ public class Blackjack
             % NUMBER_OF_PLAYERS )
         {
             currentBet = makeBet( i, dealer );
+            cardWindow.update();
             players[i].addBet( currentBet );
             window.message( describePerson( players[i] ) );
 
             j++;
         }
-        cardWindow.update();
+        
 
         window.message("");
 
@@ -241,13 +280,22 @@ public class Blackjack
             % NUMBER_OF_PLAYERS )
         {
             // Print befuddled hand
-            String str = befuddledHand( players[i] );
+            String str = "";
             if ( i == dealer )
-                str += " and is also the dealer.";
+                str = befuddledHand( players[i] ) + " and is also the dealer.";
+            else if (i == humanIndex)
+            {
+                str = fuddledHand( players[i] ) + ".";
+            }
+            else
+            {
+                str = players[i].getHand().size() + " cards.";
+            }
             window.message( players[i].getName() + " has a hand of " + str );
             j++;
         }
-        cardWindow.update();
+        cardWindow.updateDealer( players[dealer].getName() );
+        
 
         window.message("");
         // Make moves
@@ -258,7 +306,6 @@ public class Blackjack
             window.message( doMove( i, dealer ) );
             j++;
         }
-        cardWindow.update();
 
         // check victories, shuffle bets around
 
@@ -266,17 +313,18 @@ public class Blackjack
         {
             consolidateBets( i, dealer );
         }
-        cardWindow.update();
+        cardWindow.updateDealer( players[dealer].getName() );
+        
 
+        
         cleanHands();
-        cardWindow.update();
 
         window.message( "The amount of chips you have changed by "
             + ( players[humanIndex].getChips() - previousChips ) + "." );
     }
 
 
-    String befuddledHand( Player p )
+    private String befuddledHand( Player p )
     {
         List<Card> hand = p.getHand();
         String s = "";
@@ -298,18 +346,38 @@ public class Blackjack
             }
             index++;
         }
-        cardWindow.update();
+        
+        return s;
+    }
+    private String fuddledHand( Player p )
+    {
+        List<Card> hand = p.getHand();
+        String s = "";
+
+        int index = 0;
+        for ( Card c : hand )
+        {
+
+                s += c.toString();
+            
+            if ( index < hand.size() - 1 )
+            {
+                s += ", ";
+            }
+            index++;
+        }
+        
         return s;
     }
 
 
-    int consolidateBets( int who, int dealer )
+    private int consolidateBets( int who, int dealer )
     {
         who %= NUMBER_OF_PLAYERS;
         if ( who == dealer )
             return 0;
         int result = result( players[dealer], players[who] );
-        cardWindow.update();
+        cardWindow.updateDealer( players[dealer].getName() );
 
         if ( result == -4 || result == 3 )
         {
@@ -359,12 +427,13 @@ public class Blackjack
             // if result == 0
             players[who].transferBet( players[who] );
         }
-        cardWindow.update();
+        cardWindow.updateDealer( players[dealer].getName() );
+        
         return result;
     }
 
 
-    String describePerson( Player p )
+    private String describePerson( Player p )
     {
         String s = p.getName();
         s += "\nhas " + p.getChips() + " chips";
@@ -376,7 +445,7 @@ public class Blackjack
     }
 
 
-    String stringBet( int whoseTurn, int dealer, int bet )
+    private String stringBet( int whoseTurn, int dealer, int bet )
     {
         whoseTurn %= NUMBER_OF_PLAYERS;
         dealer %= NUMBER_OF_PLAYERS;
@@ -385,17 +454,20 @@ public class Blackjack
         {
             return "The dealer does not bet!";
         }
-        cardWindow.update();
+        cardWindow.updateDealer( players[dealer].getName() );
+        
 
         return makeIntroduction( whoseTurn, dealer ) + " bet " + bet;
     }
 
 
-    int makeBet( int whoseTurn, int dealer )
+    private int makeBet( int whoseTurn, int dealer )
     {
         whoseTurn %= NUMBER_OF_PLAYERS;
         dealer %= NUMBER_OF_PLAYERS;
-        cardWindow.update();
+        cardWindow.updateDealer( players[dealer].getName() );
+        
+
         if ( whoseTurn == dealer )
         {
             return 0;
@@ -404,6 +476,7 @@ public class Blackjack
         {
             window.message( "Make your bet! You have "
                 + players[humanIndex].getChips() + " chips." );
+            cardWindow.hideCards();
             while (input.equals( code ))
             {
                 
@@ -422,7 +495,7 @@ public class Blackjack
                         window.message( "Please bet a larger amount."
                             + "\nThe minimum bet is the minimum of " + MIN_BET
                             + " and how many chips you currently have." );
-                        cardWindow.update();
+                        
                         while (input.equals( code ))
                         {
                             
@@ -434,7 +507,7 @@ public class Blackjack
                     {
                         window.message( "Please bet a lower amount"
                             + "\nThe maximum bet is " + MAX_BET );
-                        cardWindow.update();
+                        
                         while (input.equals( "standby" ))
                         {
                             
@@ -449,9 +522,8 @@ public class Blackjack
                 }
                 catch ( NumberFormatException ex )
                 {
-                    window.message( "Invalid input. Please enter an integer"
-                        + " value for the bet." );
-                    cardWindow.update();
+                    window.message( "Invalid input. Please enter a number into the betting box and press \"bet\"." );
+                    
                     while (input.equals( code ))
                     {
                         
@@ -462,7 +534,7 @@ public class Blackjack
             }
             return val;
         }
-        cardWindow.update();
+        
         int cash = players[whoseTurn].getChips();
         int bet = Math.max( MIN_BET,
             Math.min( betAI.calculateBet( cash,
@@ -473,33 +545,36 @@ public class Blackjack
         {
             bet = cash;
         }
-        cardWindow.update();
+        
         return bet;
     }
 
 
-    String makeIntroduction( int whoseTurn, int dealer )
+    private String makeIntroduction( int whoseTurn, int dealer )
     {
         String s = players[whoseTurn].getName();
+        cardWindow.updateDealer( players[dealer].getName() );
 
         if ( whoseTurn == dealer )
         {
             s += " the dealer";
         }
-        s += "'s turn:";
-        cardWindow.update();
+        
+        s += "'s hand:";
+        
         return s;
     }
 
 
-    String doMove( int whoseTurn, int dealer )
+    private String doMove( int whoseTurn, int dealer )
     {
         whoseTurn %= NUMBER_OF_PLAYERS;
         dealer %= NUMBER_OF_PLAYERS;
 
         String s = makeIntroduction( whoseTurn, dealer );
+        cardWindow.updateDealer( players[dealer].getName() );
 
-        cardWindow.update();
+        
         if ( whoseTurn == humanIndex )
         {
             humanMove( dealer );
@@ -508,16 +583,25 @@ public class Blackjack
         {
             chooseMove( whoseTurn, dealer );
         }
-        cardWindow.update();
+        
         s += "\n" + players[whoseTurn].printHand();
-        s += "\nValue: " + players[whoseTurn].getHandValue() + "\n";
+        if (players[whoseTurn].getHandValue() == 0)
+        {
+            s += "\nValue: " + players[whoseTurn].getHandValue() + " (Surrendered)\n";
+        }
+        else
+        {
+            s += "\nValue: " + players[whoseTurn].getHandValue() + "\n";
+        }
+        
+        cardWindow.updateDealer( players[dealer].getName() );
         return s;
     }
 
 
-    void chooseMove( int whoseTurn, int dealer )
+    private void chooseMove( int whoseTurn, int dealer )
     {
-        cardWindow.update();
+        
         if ( dealer == whoseTurn )
         {
             love.dealerStrategy( players[whoseTurn], deck1 );
@@ -526,10 +610,11 @@ public class Blackjack
         {
             love.wikipediaStrategy( players[whoseTurn], players[dealer], deck1 );
         }
+        cardWindow.updateDealer( players[dealer].getName() );
     }
 
 
-    void humanDealer()
+    private void humanDealer()
     {
         window.message( "It's your turn to be the dealer!" );
         window.message( "Your hand is:\n" + players[humanIndex].printHand()
@@ -540,33 +625,35 @@ public class Blackjack
     }
 
 
-    boolean cheat()
+    private boolean cheat()
     {
         window.message( "The card in your sleeve is "
-            + players[humanIndex].getPocket() );
-        window.message( "Enter \"cheat\" to cheat. "
-            + "Enter anything else to continue." );
+            + players[humanIndex].getPocket() + ". You can cheat by swapping this card with your " + players[humanIndex].getHand().get( 0 ).toString() + "." );
+        window.message( "Press \"cheat\" to cheat. "
+            + "Press anything else to continue." );
         while (input.equals( code ))
         {
             
         }
         String in = input;
         input = code;
-        cardWindow.update();
+        
         if ( !in.equalsIgnoreCase( "cheat" ) )
         {
             return false;
         }
-        cardWindow.update();
+        
 
         // switch card in sleeve to facedown card.
         players[humanIndex].swapCard();
+        cardWindow.update();
+        window.message( "" );
         window.message( "Your hand is now:\n"
             + players[humanIndex].printHand() + "\nwith a value of "
             + players[humanIndex].getHandValue() );
         window.message( "and the card in your sleeve is "
             + players[humanIndex].getPocket() );
-        cardWindow.update();
+        
         window.setPocket( players[humanIndex].getPocket().toString() );
 
         if ( Math.random() < CHEAT_FAIL_CHANCE )
@@ -579,21 +666,23 @@ public class Blackjack
             {
                 discardPile.push( c );
             }
-            cardWindow.update();
+            cardWindow.updateAll();
+            
             return true;
         }
         return false;
     }
 
 
-    void humanMove( int dealer )
+    private void humanMove( int dealer )
     {
         if ( dealer == humanIndex )
         {
             humanDealer();
             return;
         }
-        cardWindow.update();
+        cardWindow.updateDealer( players[dealer].getName() );
+        
 
         window.message( "It is now your turn. Your hand is:\n"
             + players[humanIndex].printHand() + "\nwith a value of "
@@ -602,14 +691,15 @@ public class Blackjack
         {
             return;
         }
-        cardWindow.update();
+        cardWindow.updateDealer( players[dealer].getName() );
+        
 
+        window.message( "" );
         window.message( "Make a decision! Your hand is:\n"
             + players[humanIndex].printHand() + "\nwith a value of "
             + players[humanIndex].getHandValue() );
-        window.message( "\"f\" to surrender, \"h\" to hit, "
-            + "\n\"s\" to stand, \"d\" to double down" );
-        cardWindow.update();
+        window.message( "Press a button to determine your action." );
+        
         char c = ' ';
         // f forfeit
         // h hit
@@ -650,58 +740,67 @@ public class Blackjack
                 input = code;
             }
             c = in.charAt( 0 );
-            cardWindow.update();
+            
         }
 
         while ( true )
         {
+            window.message( "" );
             if ( c == 'f' )
             {
                 window.message( "You surrender." );
                 players[humanIndex].changeSurrendered( true );
-                cardWindow.update();
+                cardWindow.updateAll();
+                
                 return;
             }
             else if ( c == 'h' )
             {
                 window.message( "You decide to hit." );
                 Card card = deck1.draw();
+                cardWindow.update();
                 window.message( "You get a " + card.toString() + "!" );
                 players[humanIndex].addCard( card );
                 cardWindow.update();
+                
                 window.message( "Your current hand is "
                     + players[humanIndex].printHand() );
-                cardWindow.update();
+                
                 if ( players[humanIndex].getHandValue() > 21 )
                 {
-                    window.message( "You busted!" );
-                    cardWindow.update();
+                    window.message( "You busted!\n" );
+                    cardWindow.updateAll();
+                    
                     return;
                 }
             }
             else if ( c == 's' )
             {
-                window.message( "You decide to stand. Your turn ends." );
-                cardWindow.update();
+                window.message( "You decide to stand. Your turn ends.\n" );
+                cardWindow.updateAll();
+                
                 return;
             }
             else
             {
                 // if(c == 'd' )
                 window.message( "You decide to double down." );
-                cardWindow.update();
+                
 
                 if ( players[humanIndex].doubleDown() )
                 {
                     Card card = deck1.draw();
+                    cardWindow.update();
                     window.message( "You get a " + card.toString() + "!" );
                     players[humanIndex].addCard( card );
+                    cardWindow.update();
                     window.message( "Your current hand is "
                         + players[humanIndex].printHand() );
-                    cardWindow.update();
+                    
                     if ( players[humanIndex].getHandValue() > 21 )
                     {
-                        window.message( "You busted!" );
+                        window.message( "You busted!\n" );
+                        cardWindow.updateAll();
                     }
                     return;
                 }
@@ -710,20 +809,24 @@ public class Blackjack
                     window.message( "You don't have enough chips!" );
                     window.message( "You hit instead." );
                     Card card = deck1.draw();
+                    cardWindow.update();
                     window.message( "You get a " + card.toString() + "!" );
                     players[humanIndex].addCard( card );
+                    cardWindow.update();
                     window.message( "Your current hand is "
                         + players[humanIndex].printHand() );
-                    cardWindow.update();
+                    
                     if ( players[humanIndex].getHandValue() > 21 )
                     {
-                        window.message( "You busted!" );
+                        window.message( "You busted!\n" );
+                        cardWindow.updateAll();
                         return;
                     }
                 }
             }
+            cardWindow.updateDealer( players[dealer].getName() );
 
-            cardWindow.update();
+            
             window.message( "What is your next move?" );
             while (input.equals( code ))
             {
@@ -741,26 +844,25 @@ public class Blackjack
                 input = code;
             }
             c = in.charAt( 0 );
-            cardWindow.update();
+            
 
             while ( c != 'f' && c != 'h' && c != 's' && c != 'd' )
             {
                 window.message( "Please enter a valid command." );
-                window.message( "\"f\" to surrender, \"h\" to hit, "
-                    + "\n\"s\" to stand, \"d\" to double down" );
                 while (input.equals( code ))
                 {
                     
                 }
                 c = input.charAt( 0 );
                 input = code;
-                cardWindow.update();
+                
             }
+            cardWindow.updateDealer( players[dealer].getName() );
         }
     }
 
 
-    public void updateSkill()
+    private void updateSkill()
     {
         for ( int i = 0; i < NUMBER_OF_PLAYERS; i++ )
         {
@@ -805,14 +907,14 @@ public class Blackjack
      *            user input Player to compare with the dealer
      * @return the int number that corresponds to a result
      */
-    int result( Player dealer, Player p )
+    private int result( Player dealer, Player p )
     {
         int dHand = dealer.getHandValue();
         int dCards = dealer.getHand().size();
         int pHand = p.getHandValue();
         int pCards = p.getHand().size();
 
-        cardWindow.update();
+        
         if ( pCards == 0 )
         {
             return -4;
@@ -852,12 +954,12 @@ public class Blackjack
             return -1;
         }
 
-        cardWindow.update();
+        
         return 0;
     }
 
 
-    String deal()
+    private String deal()
     {
         String s = "";
         cleanHands();
@@ -875,11 +977,13 @@ public class Blackjack
             players[i].addCard( deck1.draw() );
         }
         cardWindow.update();
+
+        
         return s;
     }
 
 
-    public void cleanHands()
+    private  void cleanHands()
     {
         for ( Player p : players )
         {
@@ -891,11 +995,12 @@ public class Blackjack
                 discardPile.push( c );
             }
         }
-        cardWindow.update();
+
+        
     }
 
 
-    public int resetDeck()
+    private int resetDeck()
     {
         betAI.reset();
         while ( !discardPile.isEmpty() )
@@ -904,15 +1009,15 @@ public class Blackjack
         }
         deck1.shuffle();
 
-        cardWindow.update();
+        
         return deck1.getSize();
     }
     
-    public Player getHuman()
-    {
-        return players[humanIndex];
-    }
     
+    /**
+     * Returns a list of the players within the game, starting with the human player.
+     * @return The list of players.
+     */
     public Player[] getPlayers()
     {
         Player[] result = new Player[players.length];
@@ -929,6 +1034,10 @@ public class Blackjack
         return result;
     }
     
+    /**
+     * Changes the value of the string "input". This method simulates a button press.
+     * @param change The string input is to be changed to.
+     */
     public void inputChange(String change)
     {
         input = change;
