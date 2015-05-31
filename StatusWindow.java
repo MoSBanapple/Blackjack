@@ -52,6 +52,8 @@ public class StatusWindow extends JFrame implements ActionListener
     private HashMap<String, ImageIcon> cards;
 
     private String dealer;
+    
+    private JLabel[] isDealer;
 
 
     /**
@@ -94,6 +96,11 @@ public class StatusWindow extends JFrame implements ActionListener
         {
             name[j] = new JLabel( array[j].getName() );
         }
+        isDealer = new JLabel[4];
+        for (int j = 0; j < isDealer.length; j++)
+        {
+            isDealer[j] = new JLabel("");
+        }
         chips1 = new Box( BoxLayout.X_AXIS );
         chips2 = new Box( BoxLayout.X_AXIS );
         chips3 = new Box( BoxLayout.X_AXIS );
@@ -115,6 +122,10 @@ public class StatusWindow extends JFrame implements ActionListener
         chips2.add( value[1] );
         chips3.add( value[2] );
         chips4.add( value[3] );
+        chips1.add( isDealer[0] );
+        chips2.add( isDealer[1] );
+        chips3.add( isDealer[2] );
+        chips4.add( isDealer[3] );
         for ( int x = 0; x < b.length; x++ )
         {
             panel.add( b[x] );
@@ -175,22 +186,18 @@ public class StatusWindow extends JFrame implements ActionListener
         {
             if ( array[j].getName().equals( dealer ) )
             {
-                name[j].setText( array[j].getName() + " (Dealer)" );
+                isDealer[j].setText("  Dealer  " );
             }
             else
             {
-                name[j].setText( array[j].getName() );
+                isDealer[j].setText( "" );
             }
             value[j].setText( array[j].getChips() + "" );
-            for ( int k = 2; k < hands[j].length; k++ )
-            {
-                hands[j][k].setIcon( new ImageIcon() );
-            }
             for ( int k = 0; k < hands[j].length
                 && k < array[j].getHand().size(); k++ )
             {
 
-                if ( j == 0 || array[j].getHandValue() > 21 )
+                if ( j == 0 )
                 {
                     hands[j][k].setIcon( cards.get( array[j].getHand()
                         .get( k )
@@ -241,11 +248,11 @@ public class StatusWindow extends JFrame implements ActionListener
         {
             if ( array[j].getName().equals( dealer ) )
             {
-                name[j].setText( array[j].getName() + " (Dealer)" );
+                isDealer[j].setText("  Dealer  " );
             }
             else
             {
-                name[j].setText( array[j].getName() );
+                isDealer[j].setText( "" );
             }
             value[j].setText( array[j].getChips() + "" );
 
@@ -273,11 +280,11 @@ public class StatusWindow extends JFrame implements ActionListener
         {
             if ( array[j].getName().equals( dealer ) )
             {
-                name[j].setText( array[j].getName() + " (Dealer)" );
+                isDealer[j].setText("  Dealer  " );
             }
             else
             {
-                name[j].setText( array[j].getName() );
+                isDealer[j].setText( "" );
             }
             value[j].setText( array[j].getChips() + "" );
             for ( int k = 2; k < hands[j].length; k++ )
