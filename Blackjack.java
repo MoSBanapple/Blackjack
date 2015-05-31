@@ -47,7 +47,7 @@ public class Blackjack
 
     private static final double CHEAT_FAIL_CHANCE = 0.25;
 
-    private ArrayList<String> nameList;
+    private List<String> nameList;
 
     private GameWindow window;
 
