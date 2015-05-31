@@ -313,6 +313,7 @@ public class Blackjack
             consolidateBets( i, dealer );
         }
         cardWindow.updateDealer( players[dealer].getName() );
+        cardWindow.updateAll();
 
         cleanHands();
 
@@ -753,12 +754,13 @@ public class Blackjack
             window.message( "You were caught cheating! "
                 + "Be prepared to face punishment..." );
             List<Card> hand = players[humanIndex].getHand();
+            cardWindow.updateAll();
             players[humanIndex].resetHand();
             for ( Card c : hand )
             {
                 discardPile.push( c );
             }
-            cardWindow.updateAll();
+            
 
             return true;
         }
@@ -951,6 +953,7 @@ public class Blackjack
 
             }
             cardWindow.updateDealer( players[dealer].getName() );
+            cardWindow.updateAll();
         }
     }
 
