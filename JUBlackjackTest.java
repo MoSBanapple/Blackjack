@@ -10,8 +10,8 @@ import org.junit.Test;
 
 
 /**
- * JUBlackjactTest tests the classes Card, Deck, Player, AI, BettingAI, and
- * Blackjack.
+ * JUBlackjactTest tests the classes Card, Deck, Player, AI, BettingAI,
+ * Blackjack, GameWindow, Namewindow, and StatusWindow.
  *
  * @author Andrew Lee and Derek Zhang
  * @version May 30, 2015
