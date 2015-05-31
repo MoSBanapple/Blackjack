@@ -955,53 +955,64 @@ public class JUBlackjackTest
             Arrays.toString( b.getCount() ) );
     }
 
-    // // -- Test Blackjack
-    // /**
-    // * Blackjack Tests:
-    // *
-    // * BlackjackConstructor - constructs Blackjack then compare to null
-    // *
-    // * BlackjackPlayBlackjack - compares postcondition with constructed value
-    // *
-    // * BlackjackGetHuman - compares returned value to constructed value
-    // *
-    // * BlackjackGetPlayers - compares returned value to constructed value
-    // *
-    // * BlackjackInputChange - compares postcondition with constructed value
-    // */
-    //
-    // @Test
-    // public void blackjackConstructor()
-    // {
-    // Blackjack black = new Blackjack();
-    // assertNotNull( "<< Blackjack Constructor Fail >>", black );
-    // }
-    //
-    //
-    // @Test
-    // public void blackjackPlayBlackjack()
-    // {
-    // Blackjack black = new Blackjack();
-    // }
-    //
-    //
-    // @Test
-    // public void blackjackGetHuman()
-    // {
-    // Blackjack black = new Blackjack();
-    // }
-    //
-    //
-    // @Test
-    // public void blackjackGetPlayers()
-    // {
-    // Blackjack black = new Blackjack();
-    // }
-    //
-    //
-    // @Test
-    // public void blackjackInputChange()
-    // {
-    // Blackjack black = new Blackjack();
-    // }
+    // -- Test Blackjack
+    /**
+     * Blackjack Tests:
+     *
+     * BlackjackConstructor - constructs Blackjack then compare to null
+     *
+     * BlackjackGetPlayers - compares returned value to constructed value
+     *
+     * BlackjackInputChange - checks if throws any exceptions
+     */
+
+    private String test = "Test";
+
+
+    /**
+     * constructs Blackjack then compare to null
+     */
+    @Test
+    public void blackjackConstructor()
+    {
+        Blackjack black = new Blackjack();
+        assertNotNull( "<< Blackjack Constructor Fail >>", black );
+    }
+
+
+    /**
+     * compares returned value to constructed value
+     * 
+     */
+    @Test
+    public void blackjackGetPlayers()
+    {
+        Blackjack black = new Blackjack();
+        Player[] res = black.getPlayers();
+        for ( Player p : res )
+        {
+            assertEquals( "<< Blackjack: " + p.getChips() + " should be "
+                + start + " >>", start, p.getChips() );
+        }
+    }
+
+
+    /**
+     * checks if throws any exceptions
+     */
+    @Test
+    public void blackjackInputChange()
+    {
+        Blackjack black = new Blackjack();
+        boolean works = true;
+        try
+        {
+            black.inputChange( test );
+        }
+        catch ( Exception ex )
+        {
+            works = false;
+        }
+        assertTrue( "<< Blackjack failed >>", works );
+    }
 }
