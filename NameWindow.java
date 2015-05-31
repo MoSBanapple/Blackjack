@@ -46,3 +46,18 @@ public class NameWindow extends JFrame implements ActionListener
     }
 
 }
+
+
+
+
+//package aldz_Blackjack;
+//public class NameWindow
+//{
+//    private Blackjack game;
+//    public NameWindow(Blackjack toGame)
+//    {
+//        game = toGame;
+//        game.inputChange( "Test" );
+//    }
+//    
+//}
