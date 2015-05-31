@@ -17,14 +17,14 @@ import javax.swing.JTextField;
 
 
 /**
- *  This window displays the cards and status of each player.
+ * This window displays the cards and status of each player.
  *
- *  @author  Derek Zhang and Andrew Lee
- *  @version May 31, 2015
- *  @author  Period: 6
- *  @author  Assignment: ALDZ_Blackjack
+ * @author Derek Zhang and Andrew Lee
+ * @version May 31, 2015
+ * @author Period: 6
+ * @author Assignment: ALDZ_Blackjack
  *
- *  @author  Sources: TODO
+ * @author Sources: NA
  */
 public class StatusWindow extends JFrame implements ActionListener
 {
@@ -48,14 +48,17 @@ public class StatusWindow extends JFrame implements ActionListener
     private JLabel[][] hands;
 
     private Blackjack game;
-    
 
     private HashMap<String, ImageIcon> cards;
+
     private String dealer;
 
 
     /**
-     * @param togame The associated blackjack game.
+     * The constructor for the StatusWindow JFrame.
+     * 
+     * @param togame
+     *            The associated blackjack game.
      */
     public StatusWindow( Blackjack togame )
     {
@@ -162,14 +165,15 @@ public class StatusWindow extends JFrame implements ActionListener
 
 
     /**
-     * Updates the display, while showing only the user's cards and the dealer's displayed cards.
+     * Updates the display, while showing only the user's cards and the dealer's
+     * displayed cards.
      */
     public void update()
     {
         Player[] array = game.getPlayers();
         for ( int j = 0; j < array.length; j++ )
         {
-            if (array[j].getName().equals( dealer ))
+            if ( array[j].getName().equals( dealer ) )
             {
                 name[j].setText( array[j].getName() + " (Dealer)" );
             }
@@ -178,7 +182,7 @@ public class StatusWindow extends JFrame implements ActionListener
                 name[j].setText( array[j].getName() );
             }
             value[j].setText( array[j].getChips() + "" );
-            for (int k = 2; k < hands[j].length; k++)
+            for ( int k = 2; k < hands[j].length; k++ )
             {
                 hands[j][k].setIcon( new ImageIcon() );
             }
@@ -186,7 +190,7 @@ public class StatusWindow extends JFrame implements ActionListener
                 && k < array[j].getHand().size(); k++ )
             {
 
-                if ( j == 0 || array[j].getHandValue() > 21)
+                if ( j == 0 || array[j].getHandValue() > 21 )
                 {
                     hands[j][k].setIcon( cards.get( array[j].getHand()
                         .get( k )
@@ -194,8 +198,8 @@ public class StatusWindow extends JFrame implements ActionListener
                 }
                 else
                 {
-                    
-                    if (array[j].getName().equals( dealer )&& k > 0)
+
+                    if ( array[j].getName().equals( dealer ) && k > 0 )
                     {
                         hands[j][k].setIcon( cards.get( array[j].getHand()
                             .get( k )
@@ -206,7 +210,6 @@ public class StatusWindow extends JFrame implements ActionListener
                         hands[j][k].setIcon( cards.get( "back" ) );
                     }
                 }
-                
 
             }
 
@@ -215,23 +218,28 @@ public class StatusWindow extends JFrame implements ActionListener
 
 
     /**
-     * Updates the name of the dealer. This is used in conjunction with the other update methods.
-     * @param name The name of the dealer.
+     * Updates the name of the dealer. This is used in conjunction with the
+     * other update methods.
+     * 
+     * @param name
+     *            The name of the dealer.
      */
-    public void updateDealer(String name)
+    public void updateDealer( String name )
     {
         dealer = name;
     }
+
+
     /**
      * Updates the display with all cards shown.
      */
     public void updateAll()
     {
-        
+
         Player[] array = game.getPlayers();
         for ( int j = 0; j < array.length; j++ )
         {
-            if (array[j].getName().equals( dealer ))
+            if ( array[j].getName().equals( dealer ) )
             {
                 name[j].setText( array[j].getName() + " (Dealer)" );
             }
@@ -240,7 +248,7 @@ public class StatusWindow extends JFrame implements ActionListener
                 name[j].setText( array[j].getName() );
             }
             value[j].setText( array[j].getChips() + "" );
-            
+
             for ( int k = 0; k < hands[j].length
                 && k < array[j].getHand().size(); k++ )
             {
@@ -263,7 +271,7 @@ public class StatusWindow extends JFrame implements ActionListener
         Player[] array = game.getPlayers();
         for ( int j = 0; j < array.length; j++ )
         {
-            if (array[j].getName().equals( dealer ))
+            if ( array[j].getName().equals( dealer ) )
             {
                 name[j].setText( array[j].getName() + " (Dealer)" );
             }
@@ -272,7 +280,7 @@ public class StatusWindow extends JFrame implements ActionListener
                 name[j].setText( array[j].getName() );
             }
             value[j].setText( array[j].getChips() + "" );
-            for (int k = 2; k < hands[j].length; k++)
+            for ( int k = 2; k < hands[j].length; k++ )
             {
                 hands[j][k].setIcon( new ImageIcon() );
             }
@@ -289,33 +297,32 @@ public class StatusWindow extends JFrame implements ActionListener
 
 }
 
-
-//Uncomment the below segment and comment the above segment for testing
+// Uncomment the below segment and comment the above segment for testing
 
 //
-//package aldz_Blackjack;
-//public class StatusWindow
-//{
-//  private Blackjack game;
-//  public StatusWindow(Blackjack toGame)
-//  {
-//      game = toGame;
-//  }
-//  
-//  public void update()
-//  {
-//      
-//  }
-//  public void hideCards()
-//  {
-//      
-//  }
-//  public void updateAll()
-//  {
-//      
-//  }
-//  public void updateDealer(String s)
-//  {
-//      
-//  }
-//}
+// package aldz_Blackjack;
+// public class StatusWindow
+// {
+// private Blackjack game;
+// public StatusWindow(Blackjack toGame)
+// {
+// game = toGame;
+// }
+//
+// public void update()
+// {
+//
+// }
+// public void hideCards()
+// {
+//
+// }
+// public void updateAll()
+// {
+//
+// }
+// public void updateDealer(String s)
+// {
+//
+// }
+// }
