@@ -1,6 +1,7 @@
 package aldz_Blackjack;
 
 import java.awt.CardLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -29,6 +30,16 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
+/**
+ *  This window accepts commands from the user and displays a information feed.
+ *
+ *  @author  Derek Zhang and Andrew Lee
+ *  @version May 31, 2015
+ *  @author  Period: 6
+ *  @author  Assignment: ALDZ_Blackjack
+ *
+ *  @author  Sources: TODO
+ */
 public class GameWindow extends JFrame implements ActionListener
 {
     private Blackjack game;
@@ -38,6 +49,9 @@ public class GameWindow extends JFrame implements ActionListener
     private JTextField pocket;
     private HashMap<String, ImageIcon> cards;
     private String s;
+    /**
+     * @param toGame The game associated with the window.
+     */
     public GameWindow(Blackjack toGame)
     {
         super("GameWindow");
@@ -137,6 +151,10 @@ public class GameWindow extends JFrame implements ActionListener
         gbc.gridx = 0;
         gbc.gridy = 5;
         panel.add( pocketBox, gbc );
+        pocket.setEditable( false );
+        pocket.setBackground( Color.WHITE );
+        this.setDefaultCloseOperation( EXIT_ON_CLOSE );
+        
         
     }
 
@@ -172,11 +190,19 @@ public class GameWindow extends JFrame implements ActionListener
         
     }
     
+    /**
+     * Changes the card displayed in the pocket.
+     * @param card The string represenntation of the cards
+     */
     public void setPocket(String card)
     {
         pocket.setText( card );
     }
     
+    /**
+     * Adds a line to the text feed.
+     * @param report Line to be added.
+     */
     public void message(String report)
     {
         reporter.append( report + "\n");
@@ -184,10 +210,6 @@ public class GameWindow extends JFrame implements ActionListener
         
     }
     
-    public JTextArea getReporter()
-    {
-        return reporter;
-    }
 
 }
 
