@@ -1019,7 +1019,8 @@ public class JUBlackjackTest
         }
         assertTrue( "<< Blackjack failed >>", works );
     }
-    
+
+
     /**
      * GameWindow stub tests
      * 
@@ -1029,58 +1030,59 @@ public class JUBlackjackTest
      * 
      * GameWindowMessage - Tests the message method for GameWindow stub
      */
-    
+
     /**
      * Tests the constructor for GameWindow
      */
     @Test
     public void gameWindowConstructor()
     {
-        GameWindow gw = new GameWindow(new Blackjack());
-        assertNotNull(gw);
+        GameWindow gw = new GameWindow( new Blackjack() );
+        assertNotNull( gw );
     }
-    
+
+
     /**
      * Tests the setPocket method for GameWindow stub
      */
     @Test
     public void gameWindowSetPocket()
     {
-        GameWindow gw = new GameWindow(new Blackjack());
-        assertNotNull(gw);
+        GameWindow gw = new GameWindow( new Blackjack() );
+        assertNotNull( gw );
         gw.setPocket( null );
     }
-    
+
+
     /**
      * Tests the message method for GameWindow stub
      */
     @Test
     public void gameWindowMessage()
     {
-        GameWindow gw = new GameWindow(new Blackjack());
-        assertNotNull(gw);
+        GameWindow gw = new GameWindow( new Blackjack() );
+        assertNotNull( gw );
         gw.message( null );
     }
-    
-    
+
+
     /**
      * NameWindow stub tests
      * 
      * NameWindowConstructor - Tests the constructor for NameWindow
      */
-    
+
     /**
      * Tests the constructor for NameWindow
      */
     @Test
     public void nameWindowConstructor()
     {
-        NameWindow nw = new NameWindow(new Blackjack());
-        assertNotNull(nw);
+        NameWindow nw = new NameWindow( new Blackjack() );
+        assertNotNull( nw );
     }
-    
-    
-    
+
+
     /**
      * StatusWindow stub tests
      * 
@@ -1090,62 +1092,67 @@ public class JUBlackjackTest
      * 
      * StatusWindowUpdate - Tests the update method for StatusWindow stub
      * 
-     * StatusWindowUpdateDealer - Tests the updateDealer method for StatusWindow stub
+     * StatusWindowUpdateDealer - Tests the updateDealer method for StatusWindow
+     * stub
      * 
      * StatusWindowHideCards - Tests the hideCards method for StatusWindow stub
      */
-    
+
     /**
      * Tests the constructor for StatusWindow stub
      */
     @Test
     public void statusWindowConstructor()
     {
-        StatusWindow sw = new StatusWindow(new Blackjack());
-        assertNotNull(sw);
+        StatusWindow sw = new StatusWindow( new Blackjack() );
+        assertNotNull( sw );
     }
-    
+
+
     /**
      * Tests the updateAll method for StatusWindow stub
      */
     @Test
     public void statusWindowUpdateAll()
     {
-        StatusWindow sw = new StatusWindow(new Blackjack());
-        assertNotNull(sw);
+        StatusWindow sw = new StatusWindow( new Blackjack() );
+        assertNotNull( sw );
         sw.updateAll();
     }
-    
+
+
     /**
      * Tests the update method for StatusWindow stub
      */
     @Test
     public void statusWindowUpdate()
     {
-        StatusWindow sw = new StatusWindow(new Blackjack());
-        assertNotNull(sw);
+        StatusWindow sw = new StatusWindow( new Blackjack() );
+        assertNotNull( sw );
         sw.update();
     }
-    
+
+
     /**
      * Tests the updateDealer method for StatusWindow stub
      */
     @Test
     public void statusWindowUpdateDealer()
     {
-        StatusWindow sw = new StatusWindow(new Blackjack());
-        assertNotNull(sw);
-        sw.updateDealer(null);
+        StatusWindow sw = new StatusWindow( new Blackjack() );
+        assertNotNull( sw );
+        sw.updateDealer( null );
     }
-    
+
+
     /**
      * Tests the hideCards method for StatusWindow stub
      */
     @Test
     public void statusWindowHideCards()
     {
-        StatusWindow sw = new StatusWindow(new Blackjack());
-        assertNotNull(sw);
+        StatusWindow sw = new StatusWindow( new Blackjack() );
+        assertNotNull( sw );
         sw.hideCards();
     }
 
