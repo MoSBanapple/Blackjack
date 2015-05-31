@@ -35,7 +35,7 @@ Spock
 Kirk
 Antonio
 Eugeo
- Leonardo
+Leonardo
 Raphael
 Michelangelo
 Donatello
