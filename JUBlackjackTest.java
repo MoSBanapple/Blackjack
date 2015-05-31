@@ -10,7 +10,7 @@ import org.junit.Test;
  * Blackjack.
  *
  * @author Andrew Lee and Derek Zhang
- * @version May 28, 2015
+ * @version May 30, 2015
  * @author Period: 6
  * @author Assignment: ALDZ_Blackjack
  *
@@ -41,6 +41,9 @@ public class JUBlackjackTest
     private String suit = "Spades";
 
 
+    /**
+     * constructs Card and then compare toString
+     */
     @Test
     public void cardConstructor()
     {
@@ -53,6 +56,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares value returned to constructed value
+     */
     @Test
     public void cardGetValue()
     {
@@ -62,6 +68,10 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * 
+     * compares value returned to constructed value
+     */
     @Test
     public void cardGetBlackValue()
     {
@@ -74,6 +84,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares value returned to constructed value
+     */
     @Test
     public void cardGetSuit()
     {
@@ -84,6 +97,10 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * 
+     * compares value returned to null
+     */
     @Test
     public void cardToString()
     {
@@ -118,6 +135,9 @@ public class JUBlackjackTest
     private int size = 52;
 
 
+    /**
+     * constructs Deck and then compare toString
+     */
     @Test
     public void deckConstructor()
     {
@@ -130,6 +150,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * constructs Deck and then compare toString
+     */
     @Test
     public void deckDefaultConstructor()
     {
@@ -142,6 +165,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares before and after
+     */
     @Test
     public void deckShuffle()
     {
@@ -152,6 +178,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares value returned to constructed value
+     */
     @Test
     public void deckDraw()
     {
@@ -164,6 +193,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares before and after
+     */
     @Test
     public void deckCollect()
     {
@@ -176,6 +208,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares value returned to constructed value
+     */
     @Test
     public void deckFind()
     {
@@ -198,6 +233,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares value returned to constructed value
+     */
     @Test
     public void deckGetSize()
     {
@@ -208,6 +246,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares value returned to null
+     */
     @Test
     public void deckToString()
     {
@@ -261,7 +302,7 @@ public class JUBlackjackTest
      * 
      * PlayerChangeSurrendered - compares postcondition to expected
      * 
-     * PlayerGetSurrendered - compares returned value to constructed value
+     * PlayerIsSurrendered - compares returned value to constructed value
      * 
      * PlayerDoubleDown - compares postcondition to expected
      * 
@@ -269,7 +310,6 @@ public class JUBlackjackTest
      * 
      * PlayerEquals - compares returned value to constructed value
      */
-    // TODO
     private int start = 2000;
 
     private int bet = 100;
@@ -277,6 +317,9 @@ public class JUBlackjackTest
     private String name = "Alice";
 
 
+    /**
+     * constructs Player then compare to null
+     */
     @Test
     public void playerConstructor()
     {
@@ -285,6 +328,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares before and after
+     */
     @Test
     public void playerTransferBet()
     {
@@ -299,6 +345,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares returned value to constructed value
+     */
     @Test
     public void playerGetName()
     {
@@ -309,6 +358,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares postcondition to expected
+     */
     @Test
     public void playerSetName()
     {
@@ -319,6 +371,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares returned value to constructed value
+     */
     @Test
     public void playerHasAce()
     {
@@ -332,6 +387,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares before and after
+     */
     @Test
     public void playerAddCard()
     {
@@ -345,6 +403,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares postcondition to expected
+     */
     @Test
     public void playerResetHand()
     {
@@ -356,6 +417,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares returned value to constructed value
+     */
     @Test
     public void playerGetHand()
     {
@@ -371,6 +435,10 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares returned value to constructed value
+     * 
+     */
     @Test
     public void playerPrintHand()
     {
@@ -379,6 +447,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares returned value to constructed value
+     */
     @Test
     public void playerGetHandValue()
     {
@@ -393,6 +464,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares before and after
+     */
     @Test
     public void playerSwapCard()
     {
@@ -406,6 +480,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares before and after
+     */
     @Test
     public void playerAddPocket()
     {
@@ -417,6 +494,23 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares returned value to constructed value
+     */
+    @Test
+    public void playerGetPocket()
+    {
+        Player p = new Player();
+        Card c = new Card( 1, "Clubs" );
+        p.addPocket( c );
+        assertEquals( "<< Player: " + p.getPocket().toString() + " should be "
+            + c.toString() + " >>", c.toString(), p.getPocket().toString() );
+    }
+
+
+    /**
+     * compares postcondition to expected
+     */
     @Test
     public void playerSetChips()
     {
@@ -430,6 +524,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares postcondition to expected
+     */
     @Test
     public void playerAddChips()
     {
@@ -440,6 +537,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares postcondition to expected
+     */
     @Test
     public void playerAddBet()
     {
@@ -459,6 +559,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares postcondition to expected
+     */
     @Test
     public void playerResetBet()
     {
@@ -471,6 +574,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares returned value to constructed value
+     */
     @Test
     public void playerGetChips()
     {
@@ -480,6 +586,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares returned value to constructed value
+     */
     @Test
     public void playerStringChips()
     {
@@ -491,6 +600,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares returned value to constructed value
+     */
     @Test
     public void playerGetBet()
     {
@@ -505,6 +617,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares postcondition to expected
+     */
     @Test
     public void playerChangeSurrendered()
     {
@@ -516,6 +631,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares returned value to constructed value
+     */
     @Test
     public void playerIsSurrendered()
     {
@@ -524,6 +642,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares postcondition to expected
+     */
     @Test
     public void playerDoubleDown()
     {
@@ -544,6 +665,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares returned value to constructed value
+     */
     @Test
     public void playerCompareTo()
     {
@@ -556,6 +680,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares returned value to constructed value
+     */
     @Test
     public void playerEquals()
     {
@@ -583,7 +710,9 @@ public class JUBlackjackTest
      * 
      * AIWikipediaStrategy - checks if throws any exceptions
      */
-
+    /**
+     * constructs AI then compare null
+     */
     @Test
     public void aIConstructor()
     {
@@ -592,6 +721,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * checks if throws any exceptions
+     */
     @Test
     public void aIDealerStrategy()
     {
@@ -616,6 +748,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * checks if throws any exceptions
+     */
     @Test
     public void aIGuessingStrategy()
     {
@@ -640,6 +775,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * checks if throws any exceptions
+     */
     @Test
     public void aIRandomStrategy()
     {
@@ -664,6 +802,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * checks if throws any exceptions
+     */
     @Test
     public void aIPeekingStrategy()
     {
@@ -688,6 +829,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * checks if throws any exceptions
+     */
     @Test
     public void aIWikipeidaStrategy()
     {
@@ -737,6 +881,9 @@ public class JUBlackjackTest
         { -1, -1, -2, -1, -2, -1, -2 } };
 
 
+    /**
+     * constructs BettingAI then compare getCount
+     */
     @Test
     public void bettingAIConstructor()
     {
@@ -747,6 +894,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares postcondition with constructed value
+     */
     @Test
     public void bettingAIReset()
     {
@@ -760,6 +910,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares postcondition with constructed value
+     */
     @Test
     public void bettingAIUpdate()
     {
@@ -777,6 +930,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares value returned to constructed value
+     */
     @Test
     public void bettingAICalculateBet()
     {
@@ -786,6 +942,9 @@ public class JUBlackjackTest
     }
 
 
+    /**
+     * compares value returned to constructed value
+     */
     @Test
     public void bettingAIGetCount()
     {
@@ -796,9 +955,53 @@ public class JUBlackjackTest
             Arrays.toString( b.getCount() ) );
     }
 
-    // -- Test Blackjack
-    /**
-     * Blackjack Tests:
-     */
-    // TODO
+    // // -- Test Blackjack
+    // /**
+    // * Blackjack Tests:
+    // *
+    // * BlackjackConstructor - constructs Blackjack then compare to null
+    // *
+    // * BlackjackPlayBlackjack - compares postcondition with constructed value
+    // *
+    // * BlackjackGetHuman - compares returned value to constructed value
+    // *
+    // * BlackjackGetPlayers - compares returned value to constructed value
+    // *
+    // * BlackjackInputChange - compares postcondition with constructed value
+    // */
+    //
+    // @Test
+    // public void blackjackConstructor()
+    // {
+    // Blackjack black = new Blackjack();
+    // assertNotNull( "<< Blackjack Constructor Fail >>", black );
+    // }
+    //
+    //
+    // @Test
+    // public void blackjackPlayBlackjack()
+    // {
+    // Blackjack black = new Blackjack();
+    // }
+    //
+    //
+    // @Test
+    // public void blackjackGetHuman()
+    // {
+    // Blackjack black = new Blackjack();
+    // }
+    //
+    //
+    // @Test
+    // public void blackjackGetPlayers()
+    // {
+    // Blackjack black = new Blackjack();
+    // }
+    //
+    //
+    // @Test
+    // public void blackjackInputChange()
+    // {
+    // Blackjack black = new Blackjack();
+    // }
 }
