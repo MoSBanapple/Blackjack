@@ -176,6 +176,9 @@ public class Blackjack
     }
 
 
+    /**
+     * Plays a round of Blackjack. This dictates the game.
+     */
     private void playBlackjack()
     {
         int i = 0;
@@ -250,6 +253,10 @@ public class Blackjack
     }
 
 
+    /**
+     * Manages a round of blackjack.
+     * @param dealer The dealer for the round.
+     */
     private void doRound( int dealer )
     {
         updateSkill();
@@ -324,6 +331,11 @@ public class Blackjack
     }
 
 
+    /**
+     * Prints a string of cards, sans the first one.
+     * @param p Player with the hand to be printed.
+     * @return Hand minus first card, string representation.
+     */
     private String befuddledHand( Player p )
     {
         List<Card> hand = p.getHand();
@@ -349,6 +361,12 @@ public class Blackjack
         
         return s;
     }
+    
+    /**
+     * Prints a string of cards.
+     * @param p Player with the hand to be printed.
+     * @return Hand, string representation.
+     */
     private String fuddledHand( Player p )
     {
         List<Card> hand = p.getHand();
@@ -371,6 +389,12 @@ public class Blackjack
     }
 
 
+    /**
+     * Consolidates the bets of all players.
+     * @param who Player consolidated
+     * @param dealer The dealer for the round
+     * @return The result of the bet
+     */
     private int consolidateBets( int who, int dealer )
     {
         who %= NUMBER_OF_PLAYERS;
@@ -433,6 +457,11 @@ public class Blackjack
     }
 
 
+    /**
+     * Returns a string summary of the player
+     * @param p Player to be summarized
+     * @return String representation of the player
+     */
     private String describePerson( Player p )
     {
         String s = p.getName();
@@ -445,6 +474,13 @@ public class Blackjack
     }
 
 
+    /**
+     * String representation of bet
+     * @param whoseTurn Turn
+     * @param dealer Dealer for the roud
+     * @param bet Bet value
+     * @return String representation
+     */
     private String stringBet( int whoseTurn, int dealer, int bet )
     {
         whoseTurn %= NUMBER_OF_PLAYERS;
@@ -461,6 +497,12 @@ public class Blackjack
     }
 
 
+    /**
+     * Allows the player to make a bet.
+     * @param whoseTurn Turn of player
+     * @param dealer Dealer for the round
+     * @return Bet
+     */
     private int makeBet( int whoseTurn, int dealer )
     {
         whoseTurn %= NUMBER_OF_PLAYERS;
@@ -550,6 +592,12 @@ public class Blackjack
     }
 
 
+    /**
+     * Introduces the player
+     * @param whoseTurn Turn of player to be introduced
+     * @param dealer Dealer for the round
+     * @return String of the introduction
+     */
     private String makeIntroduction( int whoseTurn, int dealer )
     {
         String s = players[whoseTurn].getName();
@@ -566,6 +614,12 @@ public class Blackjack
     }
 
 
+    /**
+     * Determines the move of the player
+     * @param whoseTurn Turn of player
+     * @param dealer Dealer for the round
+     * @return String representation of move
+     */
     private String doMove( int whoseTurn, int dealer )
     {
         whoseTurn %= NUMBER_OF_PLAYERS;
@@ -599,6 +653,11 @@ public class Blackjack
     }
 
 
+    /**
+     * Choose move of player
+     * @param whoseTurn Turn of player
+     * @param dealer Dealer for the round
+     */
     private void chooseMove( int whoseTurn, int dealer )
     {
         
@@ -614,6 +673,9 @@ public class Blackjack
     }
 
 
+    /**
+     * Prints out lines and sets the player to the dealer strategy.
+     */
     private void humanDealer()
     {
         window.message( "It's your turn to be the dealer!" );
@@ -625,6 +687,10 @@ public class Blackjack
     }
 
 
+    /**
+     * Manages the cheating aspect of the game.
+     * @return Whether cheated or not.
+     */
     private boolean cheat()
     {
         window.message( "The card in your sleeve is "
@@ -674,6 +740,10 @@ public class Blackjack
     }
 
 
+    /**
+     * Determines the move of the player.
+     * @param dealer Dealer for the round.
+     */
     private void humanMove( int dealer )
     {
         if ( dealer == humanIndex )
@@ -862,6 +932,9 @@ public class Blackjack
     }
 
 
+    /**
+     * Updates the skill of the player.
+     */
     private void updateSkill()
     {
         for ( int i = 0; i < NUMBER_OF_PLAYERS; i++ )
@@ -959,6 +1032,10 @@ public class Blackjack
     }
 
 
+    /**
+     * Deals cards to all players.
+     * @return String of recieved cards.
+     */
     private String deal()
     {
         String s = "";
@@ -983,6 +1060,9 @@ public class Blackjack
     }
 
 
+    /**
+     * Clears hands of all players and returns cards to deck.
+     */
     private  void cleanHands()
     {
         for ( Player p : players )
@@ -1000,6 +1080,10 @@ public class Blackjack
     }
 
 
+    /**
+     * Resets and reshuffles the deck.
+     * @return The size of the deck.
+     */
     private int resetDeck()
     {
         betAI.reset();
