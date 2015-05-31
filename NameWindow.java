@@ -8,6 +8,15 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ *  This gui window accepts the player name prior to starting the game.
+ *  @author  Derek Zhang and Andrew Lee
+ *  @version May 31, 2015
+ *  @author  Period: 6
+ *  @author  Assignment: ALDZ_Blackjack
+ *
+ *  @author  Sources: 
+ */
 public class NameWindow extends JFrame implements ActionListener
 {
 
@@ -17,6 +26,9 @@ public class NameWindow extends JFrame implements ActionListener
     private Blackjack game;
     
 
+    /**
+     * @param toGame Blackjack game associated with this window.
+     */
     public NameWindow (Blackjack toGame)
     {
         super("Blackjack");
@@ -33,6 +45,7 @@ public class NameWindow extends JFrame implements ActionListener
         this.setBounds( 400, 400, 400, 400 );
         this.setSize( 200, 100 );
         setVisible( true );
+        this.setDefaultCloseOperation( EXIT_ON_CLOSE );
         
     }
     
@@ -48,7 +61,7 @@ public class NameWindow extends JFrame implements ActionListener
 }
 
 
-
+//Uncomment the segment below and comment the segment above for testing.
 
 //package aldz_Blackjack;
 //public class NameWindow
