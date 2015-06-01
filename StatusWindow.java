@@ -52,7 +52,7 @@ public class StatusWindow extends JFrame implements ActionListener
     private HashMap<String, ImageIcon> cards;
 
     private String dealer;
-    
+
     private JLabel[] isDealer;
 
 
@@ -97,9 +97,9 @@ public class StatusWindow extends JFrame implements ActionListener
             name[j] = new JLabel( array[j].getName() );
         }
         isDealer = new JLabel[4];
-        for (int j = 0; j < isDealer.length; j++)
+        for ( int j = 0; j < isDealer.length; j++ )
         {
-            isDealer[j] = new JLabel("");
+            isDealer[j] = new JLabel( "" );
         }
         chips1 = new Box( BoxLayout.X_AXIS );
         chips2 = new Box( BoxLayout.X_AXIS );
@@ -186,7 +186,7 @@ public class StatusWindow extends JFrame implements ActionListener
         {
             if ( array[j].getName().equals( dealer ) )
             {
-                isDealer[j].setText("  Dealer  " );
+                isDealer[j].setText( "  Dealer  " );
             }
             else
             {
@@ -197,7 +197,8 @@ public class StatusWindow extends JFrame implements ActionListener
                 && k < array[j].getHand().size(); k++ )
             {
 
-                if ( j == 0 || array[j].getHandValue() > 21 || array[j].isSurrendered())
+                if ( j == 0 || array[j].getHandValue() > 21
+                    || array[j].isSurrendered() )
                 {
                     hands[j][k].setIcon( cards.get( array[j].getHand()
                         .get( k )
@@ -248,7 +249,7 @@ public class StatusWindow extends JFrame implements ActionListener
         {
             if ( array[j].getName().equals( dealer ) )
             {
-                isDealer[j].setText("  Dealer  " );
+                isDealer[j].setText( "  Dealer  " );
             }
             else
             {
@@ -280,7 +281,7 @@ public class StatusWindow extends JFrame implements ActionListener
         {
             if ( array[j].getName().equals( dealer ) )
             {
-                isDealer[j].setText("  Dealer  " );
+                isDealer[j].setText( "  Dealer  " );
             }
             else
             {
