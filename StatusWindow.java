@@ -197,7 +197,7 @@ public class StatusWindow extends JFrame implements ActionListener
                 && k < array[j].getHand().size(); k++ )
             {
 
-                if ( j == 0 )
+                if ( j == 0 || array[j].getHandValue() > 21 || array[j].isSurrendered())
                 {
                     hands[j][k].setIcon( cards.get( array[j].getHand()
                         .get( k )
