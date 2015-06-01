@@ -760,7 +760,6 @@ public class Blackjack
             {
                 discardPile.push( c );
             }
-            
 
             return true;
         }
